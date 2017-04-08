@@ -1,0 +1,32 @@
+body{
+  background: url('../images/bg-image.png');
+}
+.table_data {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table_data td, th {
+    border: 2px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.table_data tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.tab_header{
+	border-bottom: 1px solid black;
+	margin-bottom: 5px;
+}
+
+.div_head { font-size: 16px; padding-bottom: 20px}
+.div_subhead { font-size: 14px; margin-bottom: 5px }
+.div_head, .div_subhead { font-weight: bold }
+
+.tb_head td, .div_head, .div_subhead { font-family: "Times New Roman" }
+.tb_head { border-bottom: 1px solid black }
+.tb_head td { font-size: 10px }
+.tb_head .mark { font-size: 11px }

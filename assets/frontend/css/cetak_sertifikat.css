@@ -1,0 +1,45 @@
+html, body{
+	margin:0;
+	background:	url('../images/bg-image.png');
+	font-family: 'Open Sans', sans-serif;
+}
+
+h1{
+margin: 0;
+text-align: center;
+}
+.text-sertifikat{
+	/*width: 140mm ;*/
+	/*margin-right: 10mm ;*/
+	/*float: left;*/
+	/*padding: 2mm;*/
+	/*border: 1px solid black;*/
+	font-size: 36px;
+	font-family: "Open Sans";
+	letter-spacing: 10px;
+	font-weight: 3px;
+}
+hr.style-seven {
+    height: 30px;
+    border-style: solid;
+    border-color: #0064B9;
+    border-width: 5px 0 0 0;
+    border-radius: 20px;
+}
+hr.style-eight {
+    padding: 0;
+    border: none;
+    border-top: medium double #333;
+    color: #333;
+    text-align: center;
+}
+.right_ticket{
+	width: 70mm ;
+	/*margin-right: 10mm ;*/
+	float: right;
+}
+table{
+	font-size: 16px;
+	font-family: 'sans-serif', 'Open Sans';
+	
+}

@@ -1,0 +1,27 @@
+html, body{
+	margin:0;
+	background:	url('../images/bg-image.png');
+	font-family: 'Open Sans', sans-serif;
+}
+
+h1{
+margin: 0;
+text-align: center;
+}
+.left_ticket{
+	width: 140mm ;
+	/*margin-right: 10mm ;*/
+	float: left;
+	padding: 2mm;
+	/*border: 1px solid black;*/
+}
+.right_ticket{
+	width: 70mm ;
+	/*margin-right: 10mm ;*/
+	float: right;
+}
+table{
+	font-size: 16px;
+	font-family: 'sans-serif', 'Open Sans';
+	
+}
