@@ -131,7 +131,7 @@
         <div class="footer-grids">
             <div class="clearfix"></div>
         </div>
-        <p> &copy; 2016 Event Organizer. All Rights Reserved | Design by Ariev Nurhidayat</a></p>
+        <p> &copy; 2016 Event Organizer. All Rights Reserved</p>
     </div>
 </div>
 <!-- smooth scrolling -->

@@ -55,7 +55,7 @@ ga('create', 'UA-30027142-1', 'w3layouts.com');
 							<li><a class="hvr-overline-from-center button2" href="<?php echo site_url('profil')?>" >Profil</a></li>
 
 							<!-- <li><a class="hvr-overline-from-center button2" href="typography.html">Academics</a></li> -->
-							<li><a class="hvr-overline-from-center button2" href="<?php echo base_url('seminar'); ?>">Seminar</a></li>
+							<!--<li><a class="hvr-overline-from-center button2" href="<?php echo base_url('seminar'); ?>">Seminar</a></li>-->
 							<?php $session_mhs = $this->session->userdata('CMS_mahasiswa');	
 								if(!$session_mhs){ ?>
 								<!-- <li><a class="hvr-overline-from-center button2" href="contact.html">Contact</a></li> -->
@@ -66,6 +66,7 @@ ga('create', 'UA-30027142-1', 'w3layouts.com');
 						    <?php } ?>
 							
 						</ul>
+                                            <!-- 
 						<div class="search-box">
 							<div id="sb-search" class="sb-search">
 								<form action="<?php echo base_url('seminar'); ?>">
@@ -75,6 +76,7 @@ ga('create', 'UA-30027142-1', 'w3layouts.com');
 								</form>
 							</div>
 						</div>
+                                             -->
 					</div><!-- /navbar-collapse -->
 				</nav>
 			</div>

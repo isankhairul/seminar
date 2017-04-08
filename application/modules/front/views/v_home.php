@@ -1,8 +1,8 @@
 <!-- banner -->
 <!-- <div class="banner"> -->
 <!-- <div style="padding: 60px 0"> -->
+<!--
 	<div class="container-row">
-		<!-- Responsive slider - START -->
     	<div class="responsive-slider" data-spy="responsive-slider" data-autoplay="true">
         <div class="slides" data-group="slides">
       		<ul>
@@ -37,8 +37,8 @@
           <a class="page" href="#" data-jump-to="4">4</a>
         </div>
     	</div>
-      <!-- Responsive slider - END -->
 	</div>
+-->
 <!-- </div> -->
 <!-- <div class="banner-bottom" style="background : none">
 	<div class="container">
@@ -270,12 +270,12 @@
 				endforeach;
 			?>
 		</div>
+            
+		<!-- 
 		<div class="col-md-5">
-			<!-- News -->
 			<div class="col-md-12">
 				<h2 class="tittle">News</h2>	
-				<div class="row" style="border : 1px solid grey ; background: #ffffff ; padding : 5px; margin-bottom: 10px">			
-					<!-- baris 1 -->
+				<div class="row" style="border : 1px solid grey ; background: #ffffff ; padding : 5px; margin-bottom: 10px">
 			  		<table class="table">
 				    	<tr>
 				    		<td>
@@ -322,8 +322,8 @@
 				
 				</div>
 			</div>
-			<!-- END News -->
 		</div>
+                -->
 		
 	</div>
 </div>
@@ -532,7 +532,7 @@
 			</div> -->
 			<div class="clearfix"></div>
 		</div> -->
-		<p> &copy; 2016 Event Organizer. All Rights Reserved | Design by Ariev Nurhidayat</a></p>
+		<p> &copy; 2016 Event Organizer. All Rights Reserved</p>
 	</div>
 </div> 
 <!-- //footer -->

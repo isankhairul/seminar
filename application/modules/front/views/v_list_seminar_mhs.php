@@ -60,14 +60,9 @@
 		<div class="footer-grids">
 			<div class="clearfix"></div>
 		</div>
-		<p> &copy; 2016 Event Organizer. All Rights Reserved | Design by Ariev Nurhidayat</p>
+		<p> &copy; 2016 Event Organizer. All Rights Reserved</p>
 	</div>
 </div>
-<!-- <div id="footer-custom">
-	
-		<p> &copy; 2016 Event Organizer. All Rights Reserved | Design by Ariev Nurhidayat</p>	
-	
-</div> -->
 <!-- smooth scrolling -->
 	<a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
 <!-- //smooth scrolling -->

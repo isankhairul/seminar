@@ -4,12 +4,10 @@
     	color: red !important;
 	}
 </style>
-<div class="banner page-head">
-</div>
 <div class="about">
 	<div class="container">
 		<div class="help-info">
-			<h2 class="tittle">ABOUT</h2>
+			<h2 class="tittle">LOGIN</h2>
 		</div>
 		<!-- Nav tabs -->
 		<style type="text/css">
@@ -251,7 +249,7 @@
 			</div> -->
 			<div class="clearfix"></div>
 		</div>
-		<p> &copy; 2016 Event Organizer. All Rights Reserved | Design by Ariev Nurhidayat</a></p>
+		<p> &copy; 2016 Event Organizer. All Rights Reserved</p>
 	</div>
 </div>
 <!-- smooth scrolling -->

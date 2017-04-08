@@ -100,7 +100,7 @@
 			</div> -->
 			<!-- <div class="clearfix"></div> -->
 		</div>
-		<p> &copy; 2016 Event Organizer. All Rights Reserved | Design by Ariev Nurhidayat</p>
+		<p> &copy; 2016 Event Organizer. All Rights Reserved</p>
 	</div>
 </div>
 <!-- smooth scrolling -->

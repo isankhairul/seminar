@@ -1,8 +1,8 @@
 <!-- banner -->
 <!-- <div class="banner"> -->
 <!-- <div style="padding: 60px 0"> -->
+ <!-- 
 	<div class="container-row">
-		<!-- Responsive slider - START -->
     	<div class="responsive-slider" data-spy="responsive-slider" data-autoplay="true">
         <div class="slides" data-group="slides">
       		<ul>
@@ -31,8 +31,9 @@
           <a class="page" href="#" data-jump-to="3">3</a>
         </div>
     	</div>
-      <!-- Responsive slider - END -->
+                
 	</div>
+ -->
 <!-- </div> -->
 
 <div style="padding: 60px 0">
