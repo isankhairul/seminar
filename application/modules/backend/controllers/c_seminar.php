@@ -36,13 +36,14 @@ class C_seminar extends MY_Controller {
         $config['per_page'] = "1";
         $config["uri_segment"] = 4;
         $choice = $config["total_rows"] / $config["per_page"];
-        $config["num_links"] = floor($choice);
+        $config["num_links"] = 2;
         //$config['use_page_numbers']  = TRUE;
         //config for bootstrap pagination class integration
         $config['full_tag_open'] = '<ul class="pagination">';
         $config['full_tag_close'] = '</ul>';
-        $config['first_link'] = false;
-        $config['last_link'] = false;
+        $config['first_link'] = true;
+        $config['last_link'] = $this->db->count_all('seminar');
+        ;
         $config['first_tag_open'] = '<li>';
         $config['first_tag_close'] = '</li>';
         $config['prev_link'] = '&laquo';
@@ -372,7 +373,6 @@ class C_seminar extends MY_Controller {
         if (!is_dir($config['upload_path'])) {
             @mkdir($config['upload_path']);
         }
-
         $info = pathinfo($image['name']);
 
         $url_title = url_title($info['filename'], '_', TRUE);

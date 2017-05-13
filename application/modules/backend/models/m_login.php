@@ -2,14 +2,14 @@
 
 class M_login extends CI_Model {
 	public function GetMahasiswa(){
-		$data = $this->db->query('select * from mahasiswa');
+		$data = $this->db->query('select * from member');
 		return $data->result_array();
 		
 		
 	}
 	
 	function select_user($username, $password){
-		$this->db->where('u.username_user',$username);
+		$this->db->where('u.username',$username);
 		$this->db->where('u.password',$password);
 		$this->db->from('user u');
 
@@ -23,24 +23,24 @@ class M_login extends CI_Model {
 	
 	function do_login($username, $password) {
         $this->db->select('*');
-        $this->db->where('username_user', $username);
+        $this->db->where('username', $username);
         $this->db->where('password', encryptPass($password));
         $query = $this->db->get('user');
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $item) {
-                $cms['id_user']      	= $item->id_user;
-                $cms['username_user']	= $item->username_user;
-		$cms['email_user']    	= $item->email_user;
+                $cms['user_id']      	= $item->id_user;
+                $cms['username']	= $item->username;
+                $cms['role']            = $item->role;
+		$cms['email']    	= $item->email;
                 $cms['web']    		= 'CMS-seminar' ;
             }
-            //$sess_array = array('admin' => $username, 'id' => $id, 'password' => $password, 'web' => 'MG');
             $this->session->set_userdata('CMS_logged_in', $cms);
         }
     }
 	
 	function check_user($user) {
 	    $this->db->select('*');
-	    $this->db->where('username_user', $user);
+	    $this->db->where('username', $user);
 	    $query = $this->db->get('user');
 	    if ($query->num_rows() > 0) {
 		return TRUE;
@@ -50,7 +50,7 @@ class M_login extends CI_Model {
 	}
 	function check_password($user, $password) {
 		$this->db->select('*');
-		$this->db->where('username_user', $user);
+		$this->db->where('username', $user);
 		$this->db->where('password', encryptPass($password));
 		$query = $this->db->get('user');
 		if ($query->num_rows() > 0) {

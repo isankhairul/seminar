@@ -9,18 +9,10 @@ class C_report extends MY_Controller {
     $this->load->library('excel');
 	$this->sessionData = $this->session->userdata('CMS_logged_in');
 	if(!$this->sessionData){
-	//    if($this->uri->segment(1) == 'dashboard'){ 
-	//	$this->result = true;
-	//    }
-	//    if($this->result){
-	//	redirect('dashboard');
-	//    }else{
-	//	redirect('backend/c_login');
-	//    }
 	    redirect('backend/c_login');
 	}
 
-		$this->arr_dimension_poster = array();
+	$this->arr_dimension_poster = array();
         $this->arr_dimension_poster['display']['width'] = 250;
         $this->arr_dimension_poster['display']['height'] = 400; 
 

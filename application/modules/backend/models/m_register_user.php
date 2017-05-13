@@ -3,7 +3,7 @@
 class M_register_user extends CI_Model {
     function check_username($user) {
 	$this->db->select('*');
-	$this->db->where('username_user', $user);
+	$this->db->where('username', $user);
 	$query = $this->db->get('user');
 	if ($query->num_rows() > 0) {
 	    return TRUE;
@@ -27,7 +27,7 @@ class M_register_user extends CI_Model {
     }
     
     function detailRegisterUser($idRegUser){
-	$this->db->where('id_user', $idRegUser); 
+	$this->db->where('user_id', $idRegUser); 
 	$query = $this->db->get('user');
 	if($query->num_rows() > 0){
 		return $query->row();

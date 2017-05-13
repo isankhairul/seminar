@@ -41,11 +41,11 @@
 							<thead>
 							  <tr>
 								<th>No</th>
+                                                                <th>Role </th>
 								<th>Nama Lengkap</th>								
 								<th>User Name</th>
 								<th>Email </th>
-								<th>Telepon </th>
-								<th>Kategori </th>
+								<th>Phone </th>
 								<th>Create Date </th>
 								<th>Update Date </th>
 								<th>Action</th>
@@ -56,18 +56,18 @@
 							foreach($listRegisterUser as $key => $value){ ?>
 							<tr>
 								<td><?php echo ++$start ?></td>
-								<td><?php echo $value['nama_user'] ?></td>
-								<td><?php echo $value['username_user'] ?></td>
-								<td><?php echo $value['email_user'] ?></td>
-								<td><?php echo $value['telp_user'] ?></td>
-								<td><?php echo $value['kategori_user'] ?></td>
-								<td><?php echo $value['create_date'] ?></td>	
-								<td><?php echo $value['update_date'] ?></td>
+                                                                <td><?php echo $value['role'] ?></td>
+								<td><?php echo $value['fullname']; ?></td>
+								<td><?php echo $value['username'] ?></td>
+								<td><?php echo $value['email'] ?></td>
+								<td><?php echo $value['phone'] ?></td>
+								<td><?php echo $value['created_date'] ?></td>	
+								<td><?php echo $value['modified_date'] ?></td>
 								
 								<td class="text-center">
-								    <a href="<?php echo site_url('backend/c_reg_user/v_registerUser/'.$value['id_user'])?>" >Edit</a>  
+								    <a href="<?php echo site_url('backend/c_reg_user/v_registerUser/'.$value['user_id'])?>" >Edit</a>  
 								    <?php if($value['id_user'] != 1){?>
-								    | <a id="delete_user" id_user="<?php echo $value['id_user']?>" >Delete</td>
+								    | <a id="delete_user" user_id="<?php echo $value['user_id']?>" >Delete</td>
 								    <?php } ?>
 							</tr>  
 							<?php }  ?>
@@ -114,12 +114,12 @@
 </script>
 <script>
 $(document).on("click","#delete_user", function(){
-    var answer = confirm("Are you sure you want to Cancel Register ID = "+$(this).attr('id_user')+' ?');
+    var answer = confirm("Are you sure you want to Cancel Register ID = "+$(this).attr('user_id')+' ?');
     if(answer){
              $.ajax({
                 type: "POST",
                 url: base_url+'backend/c_reg_user/do_delete',
-                data: {id : $(this).attr('id_user')},
+                data: {id : $(this).attr('user_id')},
                 dataType: "json",
                 success: function(result){				
                     switch(result.returnVal){

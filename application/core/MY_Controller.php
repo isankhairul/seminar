@@ -28,13 +28,12 @@ class MY_Controller extends MX_Controller {
         
     function doview($template, $data = array()) {
         $this->load->view('backend/header', $data);
-        $this->load->view('backend/SideMenu', $data);
+        $this->load->view('backend/side_menu', $data);
         $this->load->view($template, $data);
     }
 
     function frview($template, $data = array()) {
         $this->load->view('front/header', $data);
         $this->load->view($template, $data);
-        //$this->load->view('front/footer', $data);
     }
 }

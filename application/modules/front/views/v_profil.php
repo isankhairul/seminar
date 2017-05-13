@@ -37,7 +37,7 @@
 
 <div style="padding: 60px 0">
     <div class="container div-shadow">
-        <div class="col-md-7">
+        <div class="col-md-12">
             <div id="content">
 
                 <div class="contentbox w620">

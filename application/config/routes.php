@@ -46,9 +46,7 @@ $route['dashboard'] 	= 'backend/c_dashboard';
 
 $route['kategori_user'] = 'backend/c_kategori_user';
 $route['register_user'] = 'backend/c_reg_user';
-$route['fakultas'] 	= 'backend/c_fakultas';
-$route['jurusan-fak'] 	= 'backend/c_jurusan_fak';
-$route['mahasiswa'] 	= 'backend/c_mahasiswa';
+$route['member'] 	= 'backend/c_member';
 $route['seminar-admin'] = 'backend/c_seminar';
 $route['report'] 	= 'backend/c_report';
 

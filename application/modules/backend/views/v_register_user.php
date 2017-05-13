@@ -33,36 +33,35 @@
 			    </div>
 			<form action="<?php echo site_url('backend/c_reg_user/register_user')?>" method="post" id="form_register_user" type_form="<?php echo $type_form;?>">
 			    <fieldset>
-				<?php if (isset($getDetail->id_user)){ ?>
+				<?php if (isset($getDetail->user_id)){ ?>
 				<div class="form-group">
-					<label>Registrasi User</label>
-					<input class="form-control" placeholder="id_user" name="id_user" type="text" readonly="true" value="<?php echo (isset($getDetail->id_user) ? $getDetail->id_user : '')?>"></input>
+					<input class="form-control" placeholder="user_id" name="user_id" type="hidden" readonly="true" value="<?php echo (isset($getDetail->user_id) ? $getDetail->user_id : '')?>"></input>
 				</div>
-				<?php } ?>				
+				<?php } ?>
+                                <div class="form-group">
+					<label>Role</label>
+					<input class="form-control" placeholder="role" id="role" name="role" type="text" autofocus="" value="<?php echo (isset($getDetail->role) ? $getDetail->role : '')?>"></input>
+				</div>
+                                <div class="form-group">
+					<label>Username</label>
+					<input class="form-control" placeholder="Username" id="username" name="username" type="text" autofocus="" value="<?php echo (isset($getDetail->username) ? $getDetail->username : '')?>"></input>
+				</div>
 				<div class="form-group">
 					<label>Name</label>
-					<input class="form-control" placeholder="Nama Lengkap" id="nama" name="nama" type="text" autofocus=""value="<?php echo set_value('nama_user', $getDetail->nama_user)?> "></input>
+					<input class="form-control" placeholder="Nama Lengkap" id="fullname" name="fullname" type="text" autofocus=""value="<?php echo set_value('fullname', $getDetail->fullname)?> "></input>
 				</div>
 				<div class="form-group">
 					<label>Email</label>
-					<input class="form-control" placeholder="Email" id="email" name="email" type="email" autofocus="" value="<?php echo (isset($getDetail->id_user) ? $getDetail->email_user : '')?>"></input>
+					<input class="form-control" placeholder="Email" id="email" name="email" type="email" autofocus="" value="<?php echo (isset($getDetail->email) ? $getDetail->email : '')?>"></input>
 				</div>
 				<div class="form-group">
 					<label>Phone</label>
-					<input class="form-control" placeholder="Telepon" id="telepon" name="telepon" type="text" autofocus="" value="<?php echo (isset($getDetail->id_user) ? $getDetail->telp_user : '')?>"></input>
+					<input class="form-control" placeholder="Phone" id="phone" name="phone" type="text" autofocus="" value="<?php echo (isset($getDetail->phone) ? $getDetail->phone : '')?>"></input>
 				</div>
-				<div class="form-group">
-					<label>Category</label>
-					<input class="form-control" placeholder="kategori user" id="kategori_user" name="kategori_user" type="text" autofocus="" value="<?php echo (isset($getDetail->id_user) ? $getDetail->kategori_user : '')?>"></input>
-				</div>
-				<div class="form-group">
-					<label>Username</label>
-					<input class="form-control" placeholder="Username" id="username" name="username" type="text" autofocus="" value="<?php echo (isset($getDetail->id_user) ? $getDetail->username_user : '')?>"></input>
-				</div>
-				<?php if (!isset($getDetail->id_user)){ ?>
+				<?php if (!isset($getDetail->user_id)){ ?>
 				<div class="form-group">
 					<label>Password</label>
-					<input class="form-control" placeholder="Password" name="password" type="password" autofocus="" value="<?php echo (isset($getDetail->id_user) ? $getDetail->password : '')?>"></input>
+					<input class="form-control" placeholder="Password" name="password" type="password" autofocus="" value="<?php echo (isset($getDetail->password) ? $getDetail->password : '')?>"></input>
 				</div>				
 				<div class="form-group">
 					<label>Retype Password</label>
