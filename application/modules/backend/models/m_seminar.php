@@ -5,20 +5,6 @@ if (!defined('BASEPATH'))
 
 class M_seminar extends CI_Model {
 
-    function check_jurusan_fakultas($jur_fakultas, $status_jur_fak = '') {
-        $this->db->select('*');
-        $this->db->where('nama_fakultas', $fakultas);
-        if (!empty($status_fak)) {
-            $this->db->where('status_fakultas', $status_fak);
-        }
-        $query = $this->db->get('fakultas');
-        if ($query->num_rows() > 0) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
     public function InsertSeminar($tabelName, $data) {
         $res = $this->db->insert($tabelName, $data);
         return $res;
@@ -41,7 +27,7 @@ class M_seminar extends CI_Model {
     function jumlah_dataSeminar($search = '') {
         $this->db->select('s.*');
         $this->db->from('seminar s');
-        $this->db->where("s.tema_seminar LIKE '%$search%'");
+        $this->db->where("s.tema LIKE '%$search%'");
         $this->db->order_by('seminar_id', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -52,11 +38,10 @@ class M_seminar extends CI_Model {
     }
 
     function list_Peserta($seminar_id) {
-        $this->db->select('ord.*, m.*, smr.*,tk.*');
-        $this->db->from('order ord');
-        $this->db->join('mahasiswa m', 'ord.id_mahasiswa = m.id_mahasiswa');
+        $this->db->select('ord.*, smr.tema, smr.description, smr.jadwal, smr.tempat, m.firstname, m.lastname, m.email');
+        $this->db->from('seminar_order ord');
         $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
-        $this->db->join('ticket_manual tk', 'ord.id_ticket = tk.id_ticket');
+        $this->db->join('member m', 'ord.member_id = m.member_id');
         $this->db->where('smr.seminar_id', $seminar_id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -67,14 +52,12 @@ class M_seminar extends CI_Model {
     }
 
     function list_PesertaSeminar($limit, $start, $search = '', $seminar_id) {
-        $this->db->select('ord.*, m.*, smr.*,tk.*');
-        $this->db->from('order ord');
-        $this->db->join('mahasiswa m', 'ord.id_mahasiswa = m.id_mahasiswa');
+        $this->db->select('ord.*, m.*, smr.*');
+        $this->db->from('seminar_order ord');
         $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
-        $this->db->join('ticket_manual tk', 'ord.id_ticket = tk.id_ticket');
+        $this->db->join('member m', 'm.member_id = ord.member_id');
         $this->db->limit($limit, $start);
-        $this->db->where("m.nama_depan LIKE '%$search%'");
-        //$this->db->or_where("tk.serial", $search);
+        $this->db->where("m.firstname LIKE '%$search%'");
         $this->db->where('smr.seminar_id', $seminar_id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -85,12 +68,11 @@ class M_seminar extends CI_Model {
     }
 
     function jumlah_dataPesertaSeminar($search = '', $seminar_id) {
-        $this->db->select('ord.*, m.*, smr.*,tk.*');
-        $this->db->from('order ord');
-        $this->db->join('mahasiswa m', 'ord.id_mahasiswa = m.id_mahasiswa');
+        $this->db->select('ord.*, m.*, smr.*');
+        $this->db->from('seminar_order ord');
         $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
-        $this->db->join('ticket_manual tk', 'ord.id_ticket = tk.id_ticket');
-        $this->db->where("m.nama_depan LIKE '%$search%'");
+        $this->db->join('member m', 'm.member_id = ord.member_id');
+        $this->db->where("m.firstname LIKE '%$search%'");
         $this->db->where('smr.seminar_id', $seminar_id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -123,29 +105,9 @@ class M_seminar extends CI_Model {
             return false;
     }
 
-    function getAllDataFakultas() {
-        $this->db->select('id_fakultas, nama_fakultas');
-        $this->db->where('status_fakultas', '1');
-        $query = $this->db->get('fakultas');
-        if ($query->num_rows() > 0) {
-            return $query->result_array();
-        } else {
-            return FALSE;
-        }
-    }
 
-    function getAllDataJurusan($id_fakultas) {
-        $this->db->where('status_jurusan', '1');
-        $this->db->where('id_fakultas', $id_fakultas);
-        $query = $this->db->get('jurusan_fakultas');
-        if ($query->num_rows() > 0) {
-            return $query->result_array();
-        } else {
-            return FALSE;
-        }
-    }
 
-    function manual_ticket($seminar_id = '', $quantity = '', $input = '') {
+    function seminar_order($seminar_id = '', $quantity = '', $member_id = '') {
         $last_voucher_num = $this->db->query("SELECT COUNT(*) AS coupon_num FROM `ticket_manual` WHERE seminar_id = '" . $seminar_id . "'");
         $last_voucher = $last_voucher_num->row_array();
 
@@ -158,13 +120,11 @@ class M_seminar extends CI_Model {
 
             $data_post = array(
                 'serial' => 'SEMINAR' . $sequenz . $ticket_sequenz,
-                'secret' => uniqid(),
                 'seminar_id' => $seminar_id,
-                //'expire_time' 	=> strtotime($input['expired_date']),
-                'consume' => 0,
-                'created_time' => time(),
+                'member_id' => $member_id,
+                'created_date' => time(),
             );
-            $this->db->insert('ticket_manual', $data_post);
+            $this->db->insert('seminar_order', $data_post);
             $v_num++;
         }
     }

@@ -68,17 +68,17 @@
                             <?php foreach ($listSeminar as $key => $value): ?>
                                 <tr>
                                     <td><?php echo ++$start ?></td>
-                                    <td><?php echo $value['tema_seminar'] ?></td>
-                                    <td><?php echo $value['jadwal_seminar'] ?></td>	
-                                    <td><?php echo $value['pembicara_seminar'] ?></td>	
-                                    <td><?php echo $value['tempat_seminar'] ?></td>	
-                                    <td><?php echo $value['kuota_seminar'] ?></td>	
+                                    <td><?php echo $value['tema'] ?></td>
+                                    <td><?php echo $value['jadwal'] ?></td>	
+                                    <td><?php echo $value['pembicara'] ?></td>	
+                                    <td><?php echo $value['tempat'] ?></td>	
+                                    <td><?php echo $value['kuota'] ?></td>	
                                     <td><?php echo $value['sisa_kuota'] ?></td>
-                                    <td><?php if (!empty($value['list_peserta'])) { ?><a href="<?php echo site_url('backend/c_seminar/listPeserta/' . $value['id_seminar']) ?>" target="_blank">List Peserta</a><?php } ?></td>	
-                                    <td><?php echo (($value['status_seminar'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Non Active</span>' ); ?></td>								
+                                    <td><?php if (!empty($value['list_peserta'])) { ?><a href="<?php echo site_url('backend/c_seminar/listPeserta/' . $value['seminar_id']) ?>" target="_blank">List Peserta</a><?php } ?></td>	
+                                    <td><?php echo (($value['status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Non Active</span>' ); ?></td>								
                                     <td class="text-center">
-                                        <a href="<?php echo site_url('backend/c_seminar/v_seminar/' . $value['id_seminar']) ?>" >Edit</a>  
-                                        | <a id="delete_seminar" id_delete_seminar="<?php echo $value['id_seminar'] ?>" >Delete</td>
+                                        <a href="<?php echo site_url('backend/c_seminar/v_seminar/' . $value['seminar_id']) ?>" >Edit</a>  
+                                        | <a id="delete_seminar" id_delete_seminar="<?php echo $value['seminar_id'] ?>" >Delete</td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

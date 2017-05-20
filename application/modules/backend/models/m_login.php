@@ -28,7 +28,7 @@ class M_login extends CI_Model {
         $query = $this->db->get('user');
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $item) {
-                $cms['user_id']      	= $item->id_user;
+                $cms['user_id']      	= $item->user_id;
                 $cms['username']	= $item->username;
                 $cms['role']            = $item->role;
 		$cms['email']    	= $item->email;

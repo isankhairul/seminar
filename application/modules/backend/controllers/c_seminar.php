@@ -26,14 +26,13 @@ class C_seminar extends MY_Controller {
 
     public function index() {
         //pagination settings
-        $data['listFakultas'] = array();
         $session_searchMahasiswa = $this->session->userdata('pencarian_seminar');
         if (isset($session_searchMahasiswa)) {
             $this->session->unset_userdata('pencarian_seminar');
         }
         $config['base_url'] = site_url('backend/c_seminar/index');
         $config['total_rows'] = $this->db->count_all('seminar');
-        $config['per_page'] = "1";
+        $config['per_page'] = "5";
         $config["uri_segment"] = 4;
         $choice = $config["total_rows"] / $config["per_page"];
         $config["num_links"] = 2;
@@ -66,9 +65,8 @@ class C_seminar extends MY_Controller {
         $data['start'] = $this->uri->segment(4, 0);
         $data['listSeminar'] = $this->m_seminar->list_dataSeminar($config["per_page"], $data['page']);
         foreach ($data['listSeminar'] as $key => $value) {
-            $data['listSeminar'][$key]['list_peserta'] = $this->m_seminar->list_Peserta($value['id_seminar']);
+            $data['listSeminar'][$key]['list_peserta'] = $this->m_seminar->list_Peserta($value['seminar_id']);
         }
-        //echo '<pre>',print_r($data);die();
         $data['pagination'] = $this->pagination->create_links();
         $this->doview('list_seminar', $data);
     }
@@ -136,22 +134,16 @@ class C_seminar extends MY_Controller {
     public function v_seminar($id = '') {
         $data = array();
         $data['getDetail'] = array();
-        $data['listfakultas'] = $this->m_seminar->getAllDataFakultas();
-        foreach ($data['listfakultas'] as $key => $value) {
-            $data['listfakultas'][$key]['listjurusan'] = $this->m_seminar->getAllDataJurusan($value['id_fakultas']);
-        }
         $data['type_form'] = 'add';
         if (!empty($id)) {
-            $detail = $this->m_seminar->detailSeminar($id);
-            $data['getDetail'] = $detail;
+            $data['getDetail'] = $this->m_seminar->detailSeminar($id);
             $data['type_form'] = 'edit';
         }
 
-        //echo '<pre>',print_r($data);die();
         $this->doview('v_seminar', $data);
     }
 
-    public function listPeserta($id_seminar = '') {
+    public function listPeserta($seminar_id = '') {
         $data = array();
         $session_searchPesertaMahasiswa = $this->session->userdata('pencarian_peserta_seminar');
         if (isset($session_searchPesertaMahasiswa)) {
@@ -175,9 +167,8 @@ class C_seminar extends MY_Controller {
             $search_peserta = $this->session->userdata('pencarian_peserta_seminar');
         }
 
-        $config['base_url'] = base_url() . 'backend/c_seminar/listPeserta/' . $id_seminar;
-        $config['total_rows'] = $this->m_seminar->jumlah_dataPesertaSeminar($search_peserta, $id_seminar);
-        //echo $config['total_rows'];die();
+        $config['base_url'] = base_url() . 'backend/c_seminar/listPeserta/' . $seminar_id;
+        $config['total_rows'] = $this->m_seminar->jumlah_dataPesertaSeminar($search_peserta, $seminar_id);
         $config['per_page'] = $batas;
         $config['uri_segment'] = 5;
 
@@ -209,153 +200,86 @@ class C_seminar extends MY_Controller {
         $data['start'] = $this->uri->segment(5, 0);
 
         $data["pagination"] = $this->pagination->create_links();
-        //$this->doview('list_seminar', $data);
-        //$data['listSeminar'] = $this->m_seminar->list_dataSeminar($batas,$offset,$search_seminar);
-        $data['list_peserta'] = $this->m_seminar->list_PesertaSeminar($batas, $offset, $search_peserta, $id_seminar);
-
+        $data['list_peserta'] = $this->m_seminar->list_PesertaSeminar($batas, $offset, $search_peserta, $seminar_id);
+        
         $this->doview('list_PesertaSeminar', $data);
     }
 
     public function submit_seminar() {
         $data = array();
-        $data['listfakultas'] = $this->m_seminar->getAllDataFakultas();
-        foreach ($data['listfakultas'] as $key => $value) {
-            $data['listfakultas'][$key]['listjurusan'] = $this->m_seminar->getAllDataJurusan($value['id_fakultas']);
-        }
         $post = $this->input->post();
-        //echo '<pre>',print_r($post);die();
         $id = $post['id'];
-        if (isset($id)) {
-            $this->form_validation->set_rules('tema_seminar', 'Tema Fakultas', 'required');
-            $this->form_validation->set_rules('jadwal_seminar', 'Jadwal Seminar', 'required');
-            $this->form_validation->set_rules('pembicara_seminar', 'Pembicara Seminar', 'required');
-            $this->form_validation->set_rules('tempat_seminar', 'Tempat Seminar', 'required');
-            $this->form_validation->set_rules('kelas_seminar', 'Kelas Seminar', 'required');
-            $this->form_validation->set_rules('semester_seminar', 'Semester Seminar', 'required');
-            //$this->form_validation->set_rules('nama_jurusan', 'Jurusan Seminar', 'required');
-            //$this->form_validation->set_rules('poster_seminar', 'Poster Seminar', 'required');
-            //$this->form_validation->set_rules('sertifikat_seminar', 'Poster Seminar', 'required');
-        } else {
-            $this->form_validation->set_rules('tema_seminar', 'Tema Fakultas', 'required');
-            $this->form_validation->set_rules('jadwal_seminar', 'Jadwal Seminar', 'required');
-            $this->form_validation->set_rules('pembicara_seminar', 'Pembicara Seminar', 'required');
-            $this->form_validation->set_rules('tempat_seminar', 'Tempat Seminar', 'required');
-            $this->form_validation->set_rules('kuota_seminar', 'Kuota Seminar', 'required');
-            $this->form_validation->set_rules('kelas_seminar', 'Kelas Seminar', 'required');
-            $this->form_validation->set_rules('semester_seminar', 'Semester Seminar', 'required');
-            //$this->form_validation->set_rules('nama_jurusan', 'Jurusan Seminar', 'required');
-            //$this->form_validation->set_rules('poster_seminar', 'Poster Seminar', 'required');
-            //$this->form_validation->set_rules('sertifikat_seminar', 'Poster Seminar', 'required');
-        }
+        $user_id = $this->session->userdata('CMS_logged_in')['user_id'];
 
+        $this->form_validation->set_rules('tema_seminar', 'Tema Seminar', 'required');
+        $this->form_validation->set_rules('desc_seminar', 'Deskripsi Seminar', 'required');
+        $this->form_validation->set_rules('jadwal_seminar', 'Jadwal Seminar', 'required');
+        $this->form_validation->set_rules('pembicara_seminar', 'Pembicara Seminar', 'required');
+        $this->form_validation->set_rules('tempat_seminar', 'Tempat Seminar', 'required');
+        $this->form_validation->set_rules('kuota_seminar', 'Kuota Seminar', 'required|numeric');
 
         if ($this->form_validation->run() == FALSE) {
             if (isset($id)) {
                 $detail = $this->m_seminar->detailSeminar($id);
                 $data['getDetail'] = $detail;
                 $data['type_form'] = 'edit';
-                //echo '<pre>',print_r($data);die();
                 $this->doview('v_seminar', $data);
+                return false;
             }
+            $this->doview('v_seminar');
+            return false;
+        }
+
+        $data_seminar = array(
+            'user_id' => $user_id,
+            'tema' => trim($post['tema_seminar']),
+            'description' => trim($post['desc_seminar']),
+            'jadwal' => $post['jadwal_seminar'],
+            'pembicara' => trim($post['pembicara_seminar']),
+            'tempat' => trim($post['tempat_seminar']),
+            'kuota' => trim($post['kuota_seminar']),
+            'status' => trim($post['status_seminar'])
+        );
+        $poster_seminar = base_url('/assets/uploads/noimage.png');
+        if (!empty($_FILES['poster_seminar']['name'])) {
+            $filename_poster = $this->upload_image_poster($_FILES['poster_seminar']);
+            $poster_seminar = base_url('/assets/uploads/poster_seminar/display/250/400/' . $filename_poster);
+            $data_seminar = array_merge($data_seminar, array('poster' => $poster_seminar));
+        }
+
+        if (isset($id) && !empty($id)) {
+            $data_seminar = array_merge($data_seminar, 
+                                        array('modified_date' => date('Y-m-d H:i:s'),));
         } else {
-            $tema_seminar = trim(strtoupper($post['tema_seminar']));
-            $jadwal_seminar = $post['jadwal_seminar']; /*
-              $originalDate 				= $jadwal_seminar ;
-              $newDate 					= date("Y-m-d H:i:s", strtotime($originalDate));
-              $jadwal_seminar             = date_create($post['jadwal_seminar']);
-              $jadwal_seminar             = date_format($jadwal_seminar,"Y-m-d H:i:s"); */
-            $pembicara_seminar = trim(strtoupper($post['pembicara_seminar']));
-            $tempat_seminar = trim(strtoupper($post['tempat_seminar']));
-            $kuota_seminar = trim(strtoupper($post['kuota_seminar']));
-            $sisa_kuota = trim(strtoupper($post['kuota_seminar']));
-            $untuk_kelas = $post['kelas_seminar'];
-            foreach ($untuk_kelas as $key => $value) {
-                $untuk_kelas .= $value . ',';
-            }
-            $untuk_kelas = rtrim(trim($untuk_kelas, "Array"), ",");
+            $data_seminar = array_merge($data_seminar, 
+                                        array('created_date' => date('Y-m-d H:i:s'),
+                                                'sisa_kuota' => trim($post['kuota_seminar'])));
+        }
 
-            $semester_seminar = $post['semester_seminar'];
-            foreach ($semester_seminar as $key => $value) {
-                $semester_seminar .= $value . ',';
-            }
-            $arr_semester_seminar = explode(",", $semester_seminar);
-            if (in_array('Arrayall', $arr_semester_seminar)) {
-                $semester_seminar = 'all';
-            } else {
-                $semester_seminar = rtrim(trim($semester_seminar, "Array"), ",");
-            }
+        if (isset($id)) {
+            $key = array('seminar_id' => $id);
+            $res = $this->m_seminar->UpdateSeminar('seminar', $data_seminar, $key);
+        } else {
+            $res = $this->m_seminar->InsertSeminar('seminar', $data_seminar);
+        }
 
+        if ($res) {
             if (isset($id)) {
-                $data_seminar = array(
-                    'tema_seminar' => $tema_seminar,
-                    'jadwal_seminar' => $jadwal_seminar,
-                    'pembicara_seminar' => $pembicara_seminar,
-                    'tempat_seminar' => $tempat_seminar,
-                    'untuk_kelas' => $untuk_kelas,
-                    'semester_seminar' => $semester_seminar,
-                    //'jurusan_seminar'         => $jurusan_seminar,
-                    'update_date_seminar' => date('Y-m-d H:i:s')
-                );
-
-                if (!empty($_FILES['poster_seminar']['name'])) {
-                    $filename_poster = $this->upload_image_poster($_FILES['poster_seminar']);
-                    $poster_seminar = base_url('/assets/uploads/poster_seminar/display/250/400/' . $filename_poster);
-                    $data_seminar = array_merge($data_seminar, array('poster_seminar' => $poster_seminar));
-                }
-                //echo '<pre>',print_r($data_seminar);die();
+                $this->session->set_flashdata('infoSeminar', 'Data Berhasil Di Ubah');
             } else {
-                $data_seminar = array(
-                    'tema_seminar' => $tema_seminar,
-                    'jadwal_seminar' => $jadwal_seminar,
-                    'pembicara_seminar' => $pembicara_seminar,
-                    'tempat_seminar' => $tempat_seminar,
-                    'kuota_seminar' => $kuota_seminar,
-                    'sisa_kuota' => $kuota_seminar,
-                    'untuk_kelas' => $untuk_kelas,
-                    'semester_seminar' => $semester_seminar,
-                    //'jurusan_seminar' 		=> $jurusan_seminar,
-                    'poster_seminar' => $poster_seminar,
-                    'sertifikat_seminar' => $sertifikat_seminar,
-                    'create_date_seminar' => date('Y-m-d H:i:s')
-                );
-                $poster_seminar = base_url('/assets/uploads/noimage.png');
-                if (!empty($_FILES['poster_seminar']['name'])) {
-                    $filename_poster = $this->upload_image_poster($_FILES['poster_seminar']);
-                    $poster_seminar = base_url('/assets/uploads/poster_seminar/display/250/400/' . $filename_poster);
-                    $data_seminar = array_merge($data_seminar, array('poster_seminar' => $poster_seminar));
-                }
-                //echo '<pre>',print_r($data_seminar);die();
+                $this->session->set_flashdata('infoSeminar', 'Data Berhasil Di Tambah');
             }
-            if (isset($id)) {
-                $key = array('id_seminar' => $id);
-                $res = $this->m_seminar->UpdateSeminar('seminar', $data_seminar, $key);
-            } else {
-                $res = $this->m_seminar->InsertSeminar('seminar', $data_seminar);
-                $seminar_id = $this->db->insert_id();
-                //echo $seminar_id;die();
-                // Generate TIcket (Ticket manual)
-                $this->m_seminar->manual_ticket($seminar_id, $kuota_seminar, $this->input->post());
-            }
-
-            if ($res) {
-                if (isset($id)) {
-                    $this->session->set_flashdata('infoSeminar', 'Data Berhasil Di Ubah');
-                } else {
-                    $this->session->set_flashdata('infoSeminar', 'Data Berhasil Di Tambah');
-                }
-                redirect('seminar-admin');
-            } else {
-                echo "<h2>INsert Data Gagal</h2>";
-            }
+            redirect('seminar-admin');
+        } else {
+            echo "<h2>INsert Data Gagal</h2>";
         }
     }
 
     public function do_delete($id = '') {
         $id = $this->input->post('id');
-        $data = array('status_seminar' => 2);
-        $where = array('id_seminar' => $id);
+        $where = array('seminar_id' => $id);
 
-        $delete_seminar = $this->m_seminar->UpdateSeminar('seminar', $data, $where);
+        $delete_seminar = $this->m_seminar->deleteData('seminar', $where);
         if ($delete_seminar) {
             $alert = 'Data Berhasil Di Hapus';
             $returnVal = 'success';
@@ -488,12 +412,12 @@ class C_seminar extends MY_Controller {
         echo json_encode(array('status' => $status));
     }
 
-    function print_pesertaSeminar($id_seminar = '') {
+    function print_pesertaSeminar($seminar_id = '') {
         @set_time_limit(0);
         ob_clean();
 
 
-        $data_peserta = $this->m_seminar->list_Peserta($id_seminar);
+        $data_peserta = $this->m_seminar->list_Peserta($seminar_id);
         //echo '<pre>',print_r($data_peserta);die();
         //echo $this->db->last_query();
         //echo '<pre>',print_r($data_Point);die();
@@ -513,20 +437,7 @@ class C_seminar extends MY_Controller {
         $this->excel->getActiveSheet()->setCellValue('A1', 'List Peserta Seminar');
         $this->excel->getActiveSheet()->getStyle("A1")->getFont()->setSize(20);
 
-        /* $this->excel->getActiveSheet()->setCellValue('A3', 'Start Date : '.$from_date);
-          //$this->excel->getActiveSheet()->getStyle("A3")->getFont()->setSize(12);
-          $this->excel->getActiveSheet()->mergeCells('A3:C3');
-          $this->excel->getActiveSheet()->getStyle('A3:C3')->getFont()->setBold(true);
-
-          $this->excel->getActiveSheet()->setCellValue('A4', 'End Date : '.$to_date);
-          //$this->excel->getActiveSheet()->getStyle("A4")->getFont()->setSize(12);
-          $this->excel->getActiveSheet()->mergeCells('A4:C4');
-          $this->excel->getActiveSheet()->getStyle('A4:C4')->getFont()->setBold(true); */
-
-
         $this->excel->setActiveSheetIndex(0);
-
-
 
         // Field names in the first row
         // set cell A1 content with some text

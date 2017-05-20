@@ -35,24 +35,24 @@
                         </div>
                         <form action="<?php echo site_url('backend/c_seminar/submit_seminar') ?>" method="post" id="form_seminar" type_form="<?php echo $type_form; ?>" enctype="multipart/form-data">
                             <fieldset>
-                                <?php if (isset($getDetail->id_seminar)) { ?>
+                                <?php if (isset($getDetail->seminar_id)) { ?>
                                     <div class="form-group">
                                         <label>ID Seminar</label>
-                                        <input class="form-control" placeholder="id" name="id" type="text" readonly="true" value="<?php echo (isset($getDetail->id_seminar) ? $getDetail->id_seminar : '') ?>"></input>
+                                        <input class="form-control" placeholder="id" name="id" type="text" readonly="true" value="<?php echo (isset($getDetail->seminar_id) ? $getDetail->seminar_id : '') ?>"></input>
                                     </div>
                                 <?php } ?>				
                                 <div class="form-group">
                                     <label>Tema Seminar</label>
-                                    <input class="form-control" placeholder="Tema Seminar" id="tema_seminar" name="tema_seminar" type="text" autofocus="" value="<?php echo set_value('tema_seminar', $getDetail->tema_seminar) ?> "></input>
+                                    <input class="form-control" placeholder="Tema Seminar" id="tema_seminar" name="tema_seminar" type="text" autofocus="" value="<?php echo set_value('tema_seminar', $getDetail->tema) ?>"></input>
                                 </div>
                                 <div class="form-group">
                                     <label>Description Seminar</label>
-                                    <textarea class="form-control" placeholder="Description Seminar" id="desc_seminar" name="desc_seminar" rows="4" cols="50"><?php echo set_value('desc_seminar', $getDetail->desc_seminar) ?></textarea>
+                                    <textarea class="form-control" placeholder="Description Seminar" id="desc_seminar" name="desc_seminar" rows="4" cols="50"><?php echo set_value('desc_seminar', $getDetail->description) ?></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Jadwal Seminar</label>
                                     <div class='input-group date' id='jadwal_seminar' >
-                                        <input type='text' name="jadwal_seminar"  class="form-control" placeholder="Jadwal Seminar" value="<?php echo set_value('jadwal_seminar', $getDetail->jadwal_seminar) ?>" />
+                                        <input type='text' name="jadwal_seminar"  class="form-control" placeholder="Jadwal Seminar" value="<?php echo set_value('jadwal_seminar', $getDetail->jadwal) ?>" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -60,25 +60,42 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Pembicara Seminar</label>
-                                    <input class="form-control" placeholder="Pembicara Seminar" id="pembicara_seminar" name="pembicara_seminar" type="text" autofocus="" value="<?php echo set_value('pembicara_seminar', $getDetail->pembicara_seminar) ?> "></input>
+                                    <input class="form-control" placeholder="Pembicara Seminar" id="pembicara_seminar" name="pembicara_seminar" type="text" autofocus="" value="<?php echo set_value('pembicara_seminar', $getDetail->pembicara) ?>"></input>
                                 </div>
                                 <div class="form-group">
                                     <label>Tempat Seminar</label>
-                                    <input class="form-control" placeholder="Tempat Seminar" id="tempat_seminar" name="tempat_seminar" type="text" autofocus="" value="<?php echo set_value('tempat_seminar', $getDetail->tempat_seminar) ?> "></input>
+                                    <input class="form-control" placeholder="Tempat Seminar" id="tempat_seminar" name="tempat_seminar" type="text" autofocus="" value="<?php echo set_value('tempat_seminar', $getDetail->tempat) ?>"></input>
                                 </div>
                                 <div class="form-group">
                                     <label>Kuota Seminar</label>
-                                    <input class="form-control" placeholder="Kuota Seminar" id="kuota_seminar" name="kuota_seminar" type="text" autofocus="" value="<?php echo set_value('kuota_seminar', $getDetail->kuota_seminar) ?> " <?php echo ($type_form == 'edit' ? disabled : '') ?>></input>
+                                    <input class="form-control" placeholder="Kuota Seminar" id="kuota_seminar" name="kuota_seminar" type="text" autofocus="" value="<?php echo set_value('kuota_seminar', (int)$getDetail->kuota) ?>"></input>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Status Seminar</label>
+                                    <select name="status_seminar" class="form-control">
+                                        <?php
+                                             $status = array(0 => "Non Active",
+                                                            1 => "Active");
+                                             foreach($status as $key => $item){
+                                        ?>
+                                        <option value="<?php echo $key; ?>" <?php echo ($getDetail->status == $key) ? 'selected' : ''; ?>> 
+                                            <?php echo $item; ?> 
+                                        </option>
+                                        
+                                         <?php } ?>
+                                    </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Poster Seminar</label>
                                     <input id="poster_seminar" name="poster_seminar" type="file" autofocus="" ></input>
-                                    <?php if (!empty($getDetail->poster_seminar)) { ?>
-                                        <img class="img-thumbnail" src="<?php echo $getDetail->poster_seminar ?>">
+                                    <?php if (!empty($getDetail->poster)) { ?>
+                                        <img class="img-thumbnail" src="<?php echo $getDetail->poster; ?>">
                                     <?php } ?>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
+                                <a class="btn btn-warning" href="<?php echo site_url('seminar-admin'); ?>">Back</a>
                             </fieldset>
                         </form>
 
