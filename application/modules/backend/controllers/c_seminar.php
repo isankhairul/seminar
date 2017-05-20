@@ -202,6 +202,9 @@ class C_seminar extends MY_Controller {
         $data["pagination"] = $this->pagination->create_links();
         $data['list_peserta'] = $this->m_seminar->list_PesertaSeminar($batas, $offset, $search_peserta, $seminar_id);
         
+        //echo '<pre>';
+//        print_r($data); die();
+        
         $this->doview('list_PesertaSeminar', $data);
     }
 
@@ -394,18 +397,19 @@ class C_seminar extends MY_Controller {
     }
 
     function change_kehadiran_peserta_seminar() {
-        $id = $this->input->post('id');
-        $chk = $this->input->post('chk');
+        $post = $this->input->post();
         $status = "";
+        $where = array('order_id' => $post['id'],
+                       'member_id' => $post['member_id']);
 
-        switch ($chk) {
+        switch ($post['chk']) {
             case 1 :
-                $this->general_model->updateData('order', array('used_sertifikat' => $chk), array('id_order' => $id));
+                $this->general_model->updateData('seminar_order', array('attended' => $post['chk']), $where);
                 $status = "success";
                 break;
 
             case 0 :
-                $this->general_model->updateData('order', array('used_sertifikat' => $chk), array('id_order' => $id));
+                $this->general_model->updateData('seminar_order', array('attended' => $post['chk']), $where);
                 $status = "failed";
                 break;
         }
@@ -416,14 +420,12 @@ class C_seminar extends MY_Controller {
         @set_time_limit(0);
         ob_clean();
 
-
         $data_peserta = $this->m_seminar->list_Peserta($seminar_id);
-        //echo '<pre>',print_r($data_peserta);die();
-        //echo $this->db->last_query();
-        //echo '<pre>',print_r($data_Point);die();
-        //name the worksheet
-        //echo $data_peserta[0]['tema_seminar'];die();
-        $nama_seminar = $data_peserta[0]['tema_seminar'];
+        $date_now = date('Ymd');
+        //echo '<pre>';
+        //print_r($data_peserta); die();
+        
+        $nama_seminar = $data_peserta[0]['tema'];
         $this->excel->getActiveSheet()->setTitle('List Peserta Seminar');
 
         $styleArray = array(
@@ -441,7 +443,7 @@ class C_seminar extends MY_Controller {
 
         // Field names in the first row
         // set cell A1 content with some text
-        $fields = array('No', 'NIM', 'Nama Mahasiswa', 'No Ticket', 'Tema Seminar', 'Keterangan');
+        $fields = array('No', 'Tema Seminar', 'Email', 'Nama Depan', 'Nama Belakang', 'Serial', 'Attended');
 
         $col = 0;
         foreach ($fields as $field) {
@@ -449,30 +451,29 @@ class C_seminar extends MY_Controller {
             $col++;
         }
 
-        // Fetching the table data
-        /* $dataReportClaimed  = $this->report_model->report_claimed($tanggalClaimed); */
-        //echo '<pre>',print_r($dataReportClaimed->result());
         $row = 7;
         $no = 1;
         $noCol = 0;
         foreach ($data_peserta as $data) {
-            //echo $data['nim_mahasiswa'];die();
             $this->excel->getActiveSheet()->setCellValueByColumnAndRow($noCol, $row, $no);
-            $arrItem = array('nim_mahasiswa', 'nama_depan', 'serial', 'tema_seminar');
+            $arrItem = array('tema', 'email', 'firstname', 'lastname', 'serial', 'attended');
 
             $col = 1;
             foreach ($arrItem as $field) {
-                /* if($field == 'value'){
-                  $data->$field = str_replace('.',',',$data->$field);
-                  } */
-                /* if ($field == 'status_req') {
-                  $data->$field = $data->$field.' by '.$data->username_admin ;
-                  } */
-                $this->excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $data[$field]);
+                $data_field = $data[$field];
+                
+                if($field == 'attended'){
+                    $data_field = 'Tidak Hadir';
+                    if($data_field == 1){
+                        $data_field = 'Hadir';
+                    }
+                }
+                
+                $this->excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $data_field);
                 $col++;
             }
             //make border
-            $this->excel->getActiveSheet()->getStyle('A' . $row . ':F' . $row)->applyFromArray($styleArray);
+            $this->excel->getActiveSheet()->getStyle('A' . $row . ':G' . $row)->applyFromArray($styleArray);
             $no++;
             $row++;
         }
@@ -481,25 +482,26 @@ class C_seminar extends MY_Controller {
             $this->excel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         //make border
-        $this->excel->getActiveSheet()->getStyle('A6:F6')->applyFromArray($styleArray);
+        $this->excel->getActiveSheet()->getStyle('A6:G6')->applyFromArray($styleArray);
 
         //change the font size
         $this->excel->getActiveSheet()->getStyle()->getFont()->setSize(10);
 
         //make the font become bold
-        $this->excel->getActiveSheet()->getStyle('A1:F3')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('A1:G3')->getFont()->setBold(true);
 
         //merge cell
-        $this->excel->getActiveSheet()->mergeCells('A1:F1');
+        $this->excel->getActiveSheet()->mergeCells('A1:G1');
 
         //set aligment to center for that merged cell 
-        $this->excel->getActiveSheet()->getStyle('A1:F3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $this->excel->getActiveSheet()->getStyle('A1:F3')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $this->excel->getActiveSheet()->getStyle('A1:G3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $this->excel->getActiveSheet()->getStyle('A1:G3')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
         $this->excel->setActiveSheetIndex(0);
-
+        
+        
         $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-        $filename = "peserta-seminar-" . $data_peserta[0]['tema_seminar'] . ".xls";
+        $filename = "peserta-seminar-" . url_title($data_peserta[0]['tema']) . '-' . $date_now . ".xls";
         // Sending headers to force the user to download the file
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename=' . $filename);
@@ -509,5 +511,4 @@ class C_seminar extends MY_Controller {
     }
 
 }
-
 ?>
