@@ -37,12 +37,16 @@ class C_report extends MY_Controller {
             $post_periode   = $this->input->post('periode_report');
             $show_report    = $this->input->post('show_report');
             $print_report   = $this->input->post('print_report');
+            
             if(!empty($post_periode)){
 
                 $periode    = $this->input->post('periode_report');
                 $getDate    = explode(" - ", $periode);
                 $startDate  = $getDate[0];
                 $endDate    = $getDate[1];
+                
+                //echo '<pre>',print_r(date('Ymd', strtotime($getDate[0])));die();
+                
                 $data['report_seminar'] = array();
                 $data['report_seminar'] = $this->m_report->report_seminar($startDate, $endDate);
 
@@ -76,22 +80,15 @@ class C_report extends MY_Controller {
                     $this->excel->getActiveSheet()->getStyle("A1")->getFont()->setSize(20);
 
                     $this->excel->getActiveSheet()->setCellValue('A3', 'Start Date : '.$startDate);
-                    //$this->excel->getActiveSheet()->getStyle("A3")->getFont()->setSize(12);
                     $this->excel->getActiveSheet()->mergeCells('A3:C3');
                     $this->excel->getActiveSheet()->getStyle('A3:C3')->getFont()->setBold(true);
                     
                     $this->excel->getActiveSheet()->setCellValue('A4', 'End Date : '.$endDate);
-                    //$this->excel->getActiveSheet()->getStyle("A4")->getFont()->setSize(12);
                     $this->excel->getActiveSheet()->mergeCells('A4:C4');
                     $this->excel->getActiveSheet()->getStyle('A4:C4')->getFont()->setBold(true);
-
                     
                     $this->excel->setActiveSheetIndex(0);
                     
-                    
-                    
-                    // Field names in the first row
-                    // set cell A1 content with some text
                     $fields = array('No', 'Tema Seminar', 'Jadwal Seminar', 'Jumlah Peserta Seminar');
                     
                     $col = 0;
@@ -111,17 +108,11 @@ class C_report extends MY_Controller {
                     {
                         //echo $data['nim_mahasiswa'];die();
                         $this->excel->getActiveSheet()->setCellValueByColumnAndRow($noCol, $row, $no); 
-                        $arrItem = array('tema_seminar', 'jadwal_seminar', 'total');
+                        $arrItem = array('tema', 'jadwal', 'total');
                         
                         $col = 1;
                         foreach ($arrItem as $field)
                         {
-                            /*if($field == 'value'){
-                                $data->$field = str_replace('.',',',$data->$field);
-                            }*/
-                            /*if ($field == 'status_req') {
-                                $data->$field = $data->$field.' by '.$data->username_admin ;
-                            }*/
                             $this->excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $data[$field]);               
                             $col++;
                         }
@@ -151,10 +142,13 @@ class C_report extends MY_Controller {
                     $this->excel->getActiveSheet()->getStyle('A1:D3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
                     $this->excel->getActiveSheet()->getStyle('A1:D3')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
                     
+                    $this->excel->getActiveSheet()->getStyle('A3:C3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+                    $this->excel->getActiveSheet()->getStyle('A4:C4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+                    
                     $this->excel->setActiveSheetIndex(0);
                     
                     $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
-                    $filename = "Report-seminar".".xls" ;
+                    $filename = "ReportSeminar-" . date('Ymd', strtotime($getDate[0])) . '-'. date('Ymd', strtotime($getDate[1])) . ".xls" ;
                     // Sending headers to force the user to download the file
                     header('Content-Type: application/vnd.ms-excel');
                     header('Content-Disposition: attachment;filename='.$filename);
@@ -169,107 +163,6 @@ class C_report extends MY_Controller {
             
         }
         
-        //echo $this->db->last_query();
-        //echo '<pre>',print_r($report_seminar);die();
-
-        /*$this->excel->setActiveSheetIndex(0);
-
-        //name the worksheet
-        $this->excel->getActiveSheet()->setTitle('History worksheet');
-
-        $styleArray = array(
-            'borders' => array(
-                'allborders' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THIN
-                )
-            )
-        );
-
-        $this->excel->getActiveSheet()->setCellValue('A1', 'History User');
-        $this->excel->getActiveSheet()->getStyle("A1")->getFont()->setSize(20);
-        if(!empty($periode)){
-            $this->excel->getActiveSheet()->setCellValue('A3', 'Start Date History : '.$startDate);
-            $this->excel->getActiveSheet()->getStyle("A3")->getFont()->setSize(12);
-            
-            $this->excel->getActiveSheet()->setCellValue('A4', 'End Date History : '.$endDate);
-            $this->excel->getActiveSheet()->getStyle("A4")->getFont()->setSize(12);
-        }
-        
-        
-        //set cell A1 content with some text
-        $arrField = array('No', 'Name', 'Address', 'Agent Code', 'Agent Name', 'MG User ID', 'Email User', 'Status History', 'Gift Name', 'Value Gift', 'Point Gift', 'Last Point', 'In Point', 'Out Point', 'Current Point', 'Approved By','Tanggal History', 'Notes');
-        
-        $arrCellsTitle = $this->excel->setValueHorizontal($arrField, 6, 65); //array field, nomer cells, abjad cells (start 65 = A, end 90 = Z)
-
-        $i = 0;
-        foreach($arrCellsTitle as $cells){
-
-            $this->excel->getActiveSheet()->setCellValue($cells, $arrField[$i]);
-            $i++;
-            $this->excel->getActiveSheet()->freezePane('A7');
-        } 
-
-        $report_history = $this->report_model->data_ReportHistory($startDate,date('Y-m-d', strtotime($endDate. ' + 1 days')));
-        
-        if($report_history){
-        $no=1;
-        $startNum = 7;
-        foreach ($report_history as $row) {            
-            $tanggal_history  = new DateTime($row['date_create']);
-            $tanggal_history  = date_format($tanggal_history, 'd M Y H:i');
-            
-            $arrItem = array($no, $row['name'], $row['address'], $row['kode_agent'], $row['agent_name'], $row['mg_user_id'],$row['email'], $row['status'], $row['gift_name'], $row['value'], $row['point'], $row['last_point'], $row['in_point'], $row['out_point'], $row['current_point'], $row['username'],$tanggal_history, $row['notes']);
-
-            $arrCellsItem = $this->excel->setValueHorizontal($arrItem, $startNum, 65); //array field, nomer cells, abjad cells (start 65 = A, end 90 = Z)
-            
-
-            $i = 0;
-            foreach($arrCellsItem as $cellsItem){
-
-                $this->excel->getActiveSheet()->setCellValue($cellsItem, $arrItem[$i]);
-                $i++;
-
-                //make border
-                $this->excel->getActiveSheet()->getStyle($cellsItem)->applyFromArray($styleArray);
-                $this->excel->getActiveSheet()->getRowDimension(1)->setRowHeight(-1);
-            } 
-
-            $no++;
-            $startNum++;
-        }}
-        
-        
-        //make border
-        $this->excel->getActiveSheet()->getStyle('A6:R6')->applyFromArray($styleArray);
-
-        //change the font size
-        //$this->excel->getActiveSheet()->getStyle()->getFont()->setSize(10);
-
-        //make the font become bold
-        $this->excel->getActiveSheet()->getStyle('A1:R6')->getFont()->setBold(true);
-
-        //merge cell
-        $this->excel->getActiveSheet()->mergeCells('A1:R1');
-        
-        if(!empty($periode)){
-        $this->excel->getActiveSheet()->mergeCells('A3:D3');
-        $this->excel->getActiveSheet()->mergeCells('A4:D4');
-        }
-        
-        //set aligment to center for that merged cell 
-        $this->excel->getActiveSheet()->getStyle('A1:R6')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $this->excel->getActiveSheet()->getStyle('A1:R6')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-
-        $filename = 'history-user.xls'; //save our workbook as this file name
-        header('Content-Type: application/vnd.ms-excel'); //mime type
-        header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
-        header('Cache-Control: max-age=0'); //no cache
-                    
-        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
-        //if you want to save it as .XLSX Excel 2007 format
-        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
-        //force user to download the Excel file without writing it to server's HD
-        $objWriter->save('php://output');*/
     }
 
     function print_pesertaSeminar($id_seminar = ''){

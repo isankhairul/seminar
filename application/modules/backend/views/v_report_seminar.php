@@ -60,8 +60,8 @@
 							foreach($report_seminar as $key => $value): ?>
 							<tr>
 								<td><?php echo $no ?></td>
-								<td><?php echo $value['tema_seminar'] ?></td>
-								<td><?php echo $value['jadwal_seminar'] ?></td>	
+								<td><?php echo $value['tema'] ?></td>
+								<td><?php echo $value['jadwal'] ?></td>	
 								<td><?php echo $value['total'] ?></td>
 							</tr>
 							<?php $no++; endforeach;  ?>

@@ -11,14 +11,6 @@ class C_reg_user extends MY_Controller {
         $this->load->model('m_register_user');
         $this->sessionData = $this->session->userdata('CMS_logged_in');
         if (!$this->sessionData) {
-            //    if($this->uri->segment(1) == 'dashboard'){ 
-            //	$this->result = true;
-            //    }
-            //    if($this->result){
-            //	redirect('dashboard');
-            //    }else{
-            //	redirect('backend/c_login');
-            //    }
             redirect('backend/c_login');
         }
     }
@@ -161,10 +153,17 @@ class C_reg_user extends MY_Controller {
     }
 
     public function do_delete($id = '') {
+        $session_user_id = $this->session->userdata('CMS_logged_in')['user_id'];
         $id = $this->input->post('id');
-        $where = array('user_id' => $id);
-
-        $delete_user = $this->m_register_user->deleteData('user', $where);
+        
+        if($id == $session_user_id){
+            $alert = 'User sendiri tidak bisa di hapus !';
+            $returnVal = '';
+            echo json_encode((object) array('alert' => $alert, 'returnVal' => $returnVal));
+            return false;
+        }
+        
+        $delete_user = $this->m_register_user->deleteData('user', array('user_id' => $id));
         if ($delete_user) {
             $alert = 'Data Berhasil Di Hapus';
             $returnVal = 'success';

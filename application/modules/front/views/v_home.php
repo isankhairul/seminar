@@ -102,43 +102,48 @@
                                 <tr>
                                     <td>
                                         <a href="#" class="">
-                                            <img src="<?php echo $value['poster_seminar'] ?>" style="height:140px; width:100px" alt="...">
+                                            <img src="<?php echo $value['poster'] ?>" style="height:140px; width:100px" alt="...">
                                         </a>
                                     </td>
                                     <td valign="top">
                                         <table class="table_margin">
                                             <tr>
-                                                <td colspan="3" align="center"><b><?php echo $value['tema_seminar'] ?></b><br><br></td>
+                                                <td colspan="3" align="center"><b><?php echo $value['tema'] ?></b><br><br></td>
                                             </tr>
                                             <tr>
-                                                <td width="160px">Pembicara Seminar</td>
+                                                <td width="160px">Pembicara</td>
                                                 <td width="10px">:</td>
-                                                <td><?php echo $value['pembicara_seminar'] ?></td>
+                                                <td><?php echo $value['pembicara'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Jadwal Seminar</td>
+                                                <td>Jadwal</td>
                                                 <td>:</td>
                                                 <td>
                                                     <?php
-                                                    $date = date_create($value['jadwal_seminar']);
+                                                    $date = date_create($value['jadwal']);
                                                     $day = date_format($date, "N");
                                                     $array_hari = array(1 => Senin, Selasa, Rabu, Kamis, Jumat, Sabtu, Minggu);
                                                     $hari = $array_hari[$day];
                                                     $BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
-                                                    $tahun = substr($value['jadwal_seminar'], 0, 4);
-                                                    $bulan = substr($value['jadwal_seminar'], 5, 2);
-                                                    $tgl = substr($value['jadwal_seminar'], 8, 2);
+                                                    $tahun = substr($value['jadwal'], 0, 4);
+                                                    $bulan = substr($value['jadwal'], 5, 2);
+                                                    $tgl = substr($value['jadwal'], 8, 2);
 
                                                     $result = $tgl . " " . $BulanIndo[(int) $bulan - 1] . " " . $tahun;
-                                                    $pukul = substr($value['jadwal_seminar'], 11, 5);
+                                                    $pukul = substr($value['jadwal'], 11, 5);
                                                     echo $hari . ', ' . $result . ' - ' . $pukul
                                                     ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Tempat Seminar</td>
+                                                <td>Tempat</td>
                                                 <td>:</td>
-                                                <td><?php echo $value['tempat_seminar'] ?></td>
+                                                <td><?php echo $value['tempat'] ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kuota</td>
+                                                <td>:</td>
+                                                <td><?php echo $value['kuota'] ?></td>
                                             </tr>
                                             <tr>
                                                 <td>Sisa Kuota</td>
@@ -146,39 +151,21 @@
                                                 <td><?php echo $value['sisa_kuota'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Kelas Seminar</td>
-                                                <td>:</td>
-                                                <td><?php
-                                                    switch ($value['untuk_kelas']) {
-                                                        case '1' :
-                                                            $kelas_seminar = 'Reguler';
-                                                            break;
-
-                                                        case '2' :
-                                                            $kelas_seminar = 'Paralel';
-                                                            break;
-                                                        default :
-                                                            $kelas_seminar = 'Paralel dan Reguler';
-                                                    }
-                                                    echo $kelas_seminar
-                                                    ?></td>
-                                            </tr>		    	
-                                            <tr>
-                                                <td>Semester Seminar</td>
-                                                <td>:</td>
-                                                <td><?php echo $value['semester_seminar'] ?></td>
+                                                <td width="160px">Desckripsi</td>
+                                                <td width="10px">:</td>
+                                                <td><?php echo $value['description'] ?></td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
                             </table>
-                            <button type="button" class="btn btn-primary btn-lg" style="display:block; float:right" data-toggle="modal" data-target="#myModal-<?php echo $value['id_seminar'] ?>">Daftar</button>
+                            <button type="button" class="btn btn-primary btn-lg" style="display:block; float:right" data-toggle="modal" data-target="#myModal-<?php echo $value['seminar_id'] ?>">Daftar</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Modal -->
-                <div id="myModal-<?php echo $value['id_seminar'] ?>" class="modal fade" role="dialog">
+                <div id="myModal-<?php echo $value['seminar_id'] ?>" class="modal fade" role="dialog">
                     <div class="modal-dialog">
 
                         <!-- Modal content-->
@@ -198,61 +185,48 @@
                                             <tr>
                                                 <td width="160px">Tema Seminar</td>
                                                 <td width="10px">:</td>
-                                                <td><?php echo $value['tema_seminar'] ?></td>
+                                                <td><?php echo $value['tema'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Pembicara Seminar</td>
+                                                <td>Pembicara</td>
                                                 <td>:</td>
-                                                <td><?php echo $value['pembicara_seminar'] ?></td>
+                                                <td><?php echo $value['pembicara'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Jadwal Seminar</td>
+                                                <td>Jadwal</td>
                                                 <td>:</td>
-                                                <td><?php echo $value['jadwal_seminar'] ?></td>
+                                                <td><?php echo $value['jadwal'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Tempat Seminar</td>
+                                                <td>Tempat</td>
                                                 <td>:</td>
-                                                <td><?php echo $value['tempat_seminar'] ?></td>
+                                                <td><?php echo $value['tempat'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Kuota Seminar</td>
+                                                <td>Kuota</td>
                                                 <td>:</td>
-                                                <td><?php echo $value['kuota_seminar'] ?></td>
+                                                <td><?php echo $value['kuota'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Kelas Seminar</td>
+                                                <td>Sisa Kuota</td>
                                                 <td>:</td>
-                                                <td><?php
-                                                    switch ($value['untuk_kelas']) {
-                                                        case '1' :
-                                                            $kelas_seminar = 'Reguler';
-                                                            break;
-
-                                                        case '2' :
-                                                            $kelas_seminar = 'Paralel';
-                                                            break;
-                                                        default :
-                                                            $kelas_seminar = 'Paralel dan Reguler';
-                                                    }
-                                                    echo $kelas_seminar
-                                                    ?></td>
+                                                <td><?php echo $value['sisa_kuota'] ?></td>
                                             </tr>
                                             <tr>
                                                 <td>Semester Seminar</td>
                                                 <td>:</td>
-                                                <td><?php echo $value['semester_seminar'] ?></td>
+                                                <td><?php echo $value['semester'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>NIM Mahasiswa</td>
+                                                <td>Email</td>
                                                 <td>:</td>
-                                                <td><?php echo $session_mhs['nim_mahasiswa'] ?></td>
+                                                <td><?php echo $session_mhs['email'] ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Nama Mahasiswa</td>
+                                                <td>Nama</td>
                                                 <td>:</td>
-                                                <td><?php echo $session_mhs['nama_depan'] . ' ' . $session_mhs['nama_belakang'] ?></td>
-                                            </tr>	    	
+                                                <td><?php echo $session_mhs['firstname'] . ' ' . $session_mhs['lastname'] ?></td>
+                                            </tr>    	
                                             <tr>
                                                 <td colspan="3" style="color:red">*Pastikan data mahasiswa sudah benar, jika belum silahkan ubah data mahasiswa</td>
                                             </tr>
@@ -261,7 +235,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary btn-lg" style="width:100%" onclick="daftar_seminar(<?php echo $value['id_seminar'] ?>)">Daftar</button>
+                                <button type="button" class="btn btn-primary btn-lg" style="width:100%" onclick="daftar(<?php echo $value['seminar_id'] ?>)">Daftar</button>
                             </div>
                         </div>
 
@@ -589,7 +563,7 @@ endforeach;
 <script src="<?php echo base_url() ?>assets/frontend/js/jquery.event.move.js"></script>
 <script src="<?php echo base_url() ?>assets/frontend/js/responsive-slider.js"></script>
 <script>
-                                    function daftar_seminar(id_seminar) {
+                                    function daftar(seminar_id) {
 
                                         var id_mhs = "<?php echo $session_mhs['id_mahasiswa'] ?>";
 
@@ -603,7 +577,7 @@ endforeach;
                                                 url: "<?php echo base_url('front/seminar/submit_order') ?>",
                                                 data: {
                                                     'id_mhs': id_mhs,
-                                                    'id_seminar': id_seminar
+                                                    'seminar_id': seminar_id
 
                                                 },
                                                 dataType: 'json',

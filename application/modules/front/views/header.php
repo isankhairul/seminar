@@ -21,16 +21,6 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- //fonts -->
 </head>
 <body>
-<script>
-/*  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create', 'UA-30027142-1', 'w3layouts.com');
-  ga('send', 'pageview');*/
-</script>
-<script async type='text/javascript' src='//cdn.fancybar.net/ac/fancybar.js?zoneid=1502&serve=C6ADVKE&placement=w3layouts' id='_fancybar_js'></script>
-
 
 <!-- header -->
 <div class="header">
@@ -56,12 +46,11 @@ ga('create', 'UA-30027142-1', 'w3layouts.com');
 
 							<!-- <li><a class="hvr-overline-from-center button2" href="typography.html">Academics</a></li> -->
 							<!--<li><a class="hvr-overline-from-center button2" href="<?php echo base_url('seminar'); ?>">Seminar</a></li>-->
-							<?php $session_mhs = $this->session->userdata('CMS_mahasiswa');	
-								if(!$session_mhs){ ?>
+							<?php if(!$this->session->userdata('CMS_member')){ ?>
 								<!-- <li><a class="hvr-overline-from-center button2" href="contact.html">Contact</a></li> -->
 						        <li><a class="hvr-overline-from-center button2" href="<?php echo site_url('login')?>">Login</a></li>
 						    <?php }else{ ?>
-						    	<li><a class="hvr-overline-from-center button2" href="<?php echo site_url('mahasiswa-dashboard')?>">Mahasiswa</a></li>
+						    	<li><a class="hvr-overline-from-center button2" href="<?php echo site_url('member-dashboard')?>">Member</a></li>
 						    	<li><a class="hvr-overline-from-center button2" href="<?php echo site_url('logout')?>">Logout</a></li>
 						    <?php } ?>
 							

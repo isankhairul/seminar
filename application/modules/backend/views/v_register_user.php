@@ -133,29 +133,6 @@ $(document).ready(function(){
 	    return true;
 	}
 	
-	//if(Val_Change_Agent()==false){
-        //    return false;
-        //}else{
-        //    e.preventDefault();
-        //    //var formData = new FormData(this);
-        //    var formData = $('#change-agent').serialize();
-        //    $.ajax({
-        //        type:'POST',
-        //        url: $(this).attr('action'),
-        //        dataType: 'json',
-        //        data:formData,
-        //        success:function(result){
-        //            switch (result.returnVal) {
-        //                case 'success' :
-        //                    alert(result.alert);
-        //                    window.location.reload();
-        //                break;
-        //                default:
-        //                    alert(result.alert);
-        //            }
-        //        }
-        //    });
-        //}      
     }));
 })
 </script>

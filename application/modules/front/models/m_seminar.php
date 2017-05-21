@@ -5,7 +5,7 @@ class M_seminar extends CI_Model {
 	function getDataSeminar($table, $where, $order_by = "", $like, $start = '', $limit = ''){
 
 		$this->db->where($where);
-        $this->db->like("tema_seminar", $like);
+        $this->db->like("tema", $like);
         if($order_by){
             $this->db->order_by($order_by); 
         } 
