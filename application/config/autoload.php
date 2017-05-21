@@ -80,7 +80,7 @@ $autoload['helper'] = array('url','form','file','cookie','general','html');
 |
 */
 
-$autoload['config'] = array('init_var');
+$autoload['config'] = array('credentials');
 
 
 /*

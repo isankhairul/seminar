@@ -35,51 +35,47 @@ class C_biomember extends MY_Controller {
         $data['member'] = $this->m_register->getDetailMember($this->sessionData['member_id']);
         $post = $this->input->post();
 
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        if ($this->form_validation->run() == FALSE) {
-            $this->frview('v_update_data_member', $data);
-            return false;
-        }
-        
-        $file_name = base_url('/assets/uploads/member/display/100/150/no-photo.png');
-        if (!empty($_FILES['photo_member']['name'])) {
-            $filename = $this->upload_image($_FILES['photo_member']);
-            $file_name = base_url('/assets/uploads/member/display/100/150/' . $filename);
-        }
-
         $dataUpdate = array(
             'firstname' => trim($post['firstname']),
             'lastname' => trim($post['lastname']),
             'phone' => trim($post['phone']),
-            'photo' => $file_name,
             'modified_date' => date('Y-m-d H:i:s')
         );
+        
+        $file_name = base_url('/assets/uploads/member/display/100/150/no-photo.png');
+        if (!empty($_FILES['photo']['name'])) {
+            $filename = $this->upload_image($_FILES['photo']);
+            $file_name = base_url('/assets/uploads/member/display/100/150/' . $filename);
+            $dataUpdate = array_merge($dataUpdate, array('photo' => $file_name));
+        }
 
         //insert to table member ;
         $update_member = $this->m_register->updateData('member', $dataUpdate, array("member_id" => $this->sessionData['member_id']));
-        if ($update_member) {
-            $last_id = $this->sessionData['member_id'];
-            $detail_member = $this->m_register->getDetailMember($last_id);
-            if ($getLastIdMhs) {
-                $session_data = array(
-                    'member_id' => $detail_member['member_id'],
-                    'firstname' => $detail_member['firstname'],
-                    'lastname' => $detail_member['lastname'],
-                    'email' => $detail_member['email'],
-                    'phone' => $detail_member['phone'],
-                    'photo' => $detail_member['photo'],
-                    'status' => $detail_member['status']
-                );
-                $this->session->set_userdata('CMS_member', $session_data);
-                redirect('update-member');
-            } else {
-                $this->session->set_flashdata('infoInsertFailed', 'Maaf register anda gagal , silahkan hubungi IT');
-                $this->frview('', $data);
-            }
-        } else {
+
+        //echo '<pre>'; print_r($this->session->userdata('CMS_member')); die('');
+
+        if (!$update_member) {
             die('gagal');
             $this->session->set_flashdata('infoInsertFailed', 'Maaf register anda gagal , silahkan hubungi IT');
-            $this->frview('v_update_data_member', $data);
+            redirect(site_url('update-member'));
+        }
+
+        $detail_member = $this->m_register->getDetailMember($this->sessionData['member_id']);
+        if ($detail_member) {
+            $session_data = array(
+                'member_id' => $detail_member['member_id'],
+                'firstname' => $detail_member['firstname'],
+                'lastname' => $detail_member['lastname'],
+                'email' => $detail_member['email'],
+                'phone' => $detail_member['phone'],
+                'photo' => $detail_member['photo'],
+                'status' => $detail_member['status']
+            );
+            $this->session->set_userdata('CMS_member', $session_data);
+            redirect('update-member');
+        } else {
+            $this->session->set_flashdata('infoInsertFailed', 'Maaf register anda gagal , silahkan hubungi IT');
+            redirect(site_url('update-member'));
         }
     }
 
@@ -89,37 +85,35 @@ class C_biomember extends MY_Controller {
         $this->form_validation->set_rules('re_new_pass', 'Retype New Password', 'required');
 
         $data['member'] = $this->m_register->getDetailMember($this->sessionData['member_id']);
-        $data['fakultas'] = $this->m_register->getDataKey('fakultas', array('status_fakultas' => 1));
-
 
         if ($this->form_validation->run() == FALSE) {
             $this->frview('v_update_data_member', $data);
-        } else {
-            if ($this->input->post()) {
-                //echo 'selanjutnya';die();
-                $NowPassword = encryptPass($this->input->post('current_pass'));
-                $NewPassword = encryptPass($this->input->post('new_pass'));
+            return false;
+        }
+        if ($this->input->post()) {
+            //echo 'selanjutnya';die();
+            $NowPassword = encryptPass($this->input->post('current_pass'));
+            $NewPassword = encryptPass($this->input->post('new_pass'));
 
-                $result = $this->m_register->check_To_password($this->sessionData['member_id'], $NowPassword);
-                if ($result) {
-                    $field_key['member_id'] = $this->sessionData['member_id'];
-                    $data_update['password_member'] = $NewPassword;
-                    $changePassword = $this->m_register->updateData('member', $data_update, $field_key);
-                    if ($changePassword) {
+            $result = $this->m_register->check_To_password($this->sessionData['member_id'], $NowPassword);
+            if ($result) {
+                $field_key['member_id'] = $this->sessionData['member_id'];
+                $data_update['password'] = $NewPassword;
+                $changePassword = $this->m_register->updateData('member', $data_update, $field_key);
+                if ($changePassword) {
 
-                        $this->session->set_flashdata('infoChangePassword', 'Password anda berhasil di ganti');
-                        redirect('update-member');
-                    } else {
-                        $this->session->set_flashdata('infoCheckcPassword', 'Ganti Password tidak berhasil');
-                        redirect('update-member');
-                    }
+                    $this->session->set_flashdata('infoChangePassword', 'Password anda berhasil di ganti');
+                    redirect('update-member');
                 } else {
-                    $this->session->set_flashdata('infoCheckPassword', 'Ganti Password tidak berhasil');
+                    $this->session->set_flashdata('infoCheckcPassword', 'Ganti Password tidak berhasil');
                     redirect('update-member');
                 }
             } else {
+                $this->session->set_flashdata('infoCheckPassword', 'Ganti Password tidak berhasil');
                 redirect('update-member');
             }
+        } else {
+            redirect('update-member');
         }
     }
 
@@ -182,7 +176,7 @@ class C_biomember extends MY_Controller {
         $config['allowed_types'] = 'gif|jpg|jpeg|png';
         $this->load->library('upload', $config);
         //$this->upload->initialize($config);
-        $upload = $this->upload->do_upload('photo_member');
+        $upload = $this->upload->do_upload('photo');
 
         if (!$upload) {
             $invalid = $this->upload->display_errors();

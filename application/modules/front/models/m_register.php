@@ -39,7 +39,7 @@ class M_register extends CI_Model {
 
     function check_to_password($id, $password) {
         $this->db->where('member_id', $id);
-        $this->db->where('password_member', $password);
+        $this->db->where('password', $password);
         $query = $this->db->get('member');
         if ($query->num_rows() > 0) {
             return TRUE;

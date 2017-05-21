@@ -2,6 +2,7 @@
 /assets/frontend/barcode/*
 /application/config/database.php
 /application/config/config.php
+/application/config/credentials.php
 /application/logs/*
 /application/cache/*
 .htaccess

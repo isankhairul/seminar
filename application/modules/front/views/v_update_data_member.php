@@ -22,7 +22,8 @@
                                 <strong>Maaf!</strong> <?php echo $this->session->flashdata('infoCheckPassword'); ?>
                             </div>
 
-                            <?php $this->session->unset_userdata('infoCheckPassword');
+                            <?php
+                            $this->session->unset_userdata('infoCheckPassword');
                         }
                         ?>
 <?php if ($this->session->flashdata('infoChangePassword')) { ?>
@@ -30,15 +31,16 @@
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <strong>Yeeayyy ! </strong> <?php echo $this->session->flashdata('infoChangePassword'); ?>
                             </div>
-                            <?php $this->session->unset_userdata('infoChangePassword');
+                            <?php
+                            $this->session->unset_userdata('infoChangePassword');
                         }
                         ?>
-                        
-                        <?php if(validation_errors()){ ?>
+
+                            <?php if (validation_errors()) { ?>
                             <div class="has-error">
-                                <?php echo validation_errors();?>
+                            <?php echo validation_errors(); ?>
                             </div>
-                        <?php } ?>
+<?php } ?>
                         <!-- Form Register mahasiswa -->
                         <div role="tabpanel" class="tab-pane" id="register">
                             <div class="about-grids">

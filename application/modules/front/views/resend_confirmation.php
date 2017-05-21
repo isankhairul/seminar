@@ -8,15 +8,31 @@
     <div class="container">
         <div class="help-info">
             <h2 class="tittle">Resend Confirmation</h2>
-            <div class="col-md-5 about-grid">
-                <form action="<?php echo site_url('resend-confirmation') ?>" method="post" id="form_register_mahasiswa" enctype="multipart/form-data" style="margin-bottom: 15px">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="email" value="<?php echo set_value('email'); ?>" required>
+            
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4>Resend Confirmation</h4></div>
+                    <div class="panel-body">
+                        <?php if ($this->session->flashdata('info')) { ?>
+                            <div class="alert alert-warning">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong></strong> <?php echo $this->session->flashdata('info'); ?>
+                            </div>
+                        <?php } ?>
+                        
+                        
+                        
+                        <div class="col-md-5 about-grid">
+                            <form action="<?php echo site_url('resend-confirmation') ?>" method="post" id="form_register_mahasiswa" enctype="multipart/form-data" style="margin-bottom: 15px">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="email" value="<?php echo set_value('email'); ?>" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
+                </div>
+            
         </div>
     </div>
 </div>

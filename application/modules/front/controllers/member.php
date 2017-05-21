@@ -31,6 +31,7 @@ class Member extends MY_Controller {
         $data['tab_active'] = 'register';
         $post = $this->input->post();
         $fields = ["firstname", "lastname", "email", "phone"];
+        $code_activation = generateRandomString(20);
 
         $this->form_validation->set_rules('firstname', 'firstname', 'required');
         $this->form_validation->set_rules('lastname', 'lastname', 'required');
@@ -67,7 +68,7 @@ class Member extends MY_Controller {
             'phone' => trim($post['phone']),
             'password' => encryptPass(trim($post['password'])),
             'photo' => $file_name,
-            'code_activation' => generateRandomString(20),
+            'code_activation' => $code_activation,
             'created_date' => date('Y-m-d H:i:s')
         );
 
@@ -77,6 +78,7 @@ class Member extends MY_Controller {
             $this->session->set_flashdata('infoInsertFailed', 'Maaf register anda gagal , silahkan hubungi IT');
             $this->frview('v_register_member', $data);
         }
+        $this->send_mail_confirmation(trim($post['email']), $code_activation);
         $this->session->set_flashdata('infoSuccessRegister', 'Sukses terdaftar, silakan cek email untuk konfirmasi.');
         redirect(site_url("login"));
     }
@@ -135,28 +137,62 @@ class Member extends MY_Controller {
         $post = $this->input->post();
 
         if (!empty($post['email'])) {
+            $checkEmail = $this->m_register->check_data_where('member', array('email' => $post['email']));
+            if (!$checkEmail) {
+                $this->session->set_flashdata('info', 'Your email not registered.');
+                redirect('resend-confirmation');
+            }
+            $code_activation = generateRandomString(20);
+            $this->send_mail_confirmation($post['email'], $code_activation);
             
+            $this->m_register->updateData('member', array('code_activation' => $code_activation), array('email' => $post['email']));
+            
+            $this->session->set_flashdata('info', 'Please check your email.');
+            redirect('resend-confirmation');
         }
 
         $this->frview('resend_confirmation');
     }
+    
+    function confirmation(){
+        $data['message'] = "Confirmation failed.";
+        $code_activation = $this->input->get('hash');
+        $where = array('code_activation' => $code_activation);
+        $check_code = $this->m_register->check_data_where('member', $where);
+        
+        //echo '<pre>'; print_r($this->m_register->getDataKey('member', $where)); die();
+        
+        if($check_code){
+            //update status member to active
+            $this->m_register->updateData('member', array('status' => 1), $where);
+            
+            $data_member = $this->m_register->getDataKey('member', $where);
+            $data['message'] = "Account <b>". $data_member[0]['email']. '</b> has been active.';
+        }
+        $this->frview('confirmation', $data);
+    }
 
     function send_mail_confirmation($email, $random_string) {
+        $link_confirmation = site_url('account-confirmations?hash='.$random_string);
+        $message = "Please <a href='". $link_confirmation ."'>click here </a> for confirmation your account";
+        
         $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,
-            'smtp_user' => 'xxx',
-            'smtp_pass' => 'xxx',
+            'smtp_user' => $this->config->item('smtp_user'),
+            'smtp_pass' => $this->config->item('smtp_pwd'),
             'mailtype' => 'html',
             'charset' => 'iso-8859-1'
         );
         $this->load->library('email');
-        $this->email->from('noreply@seminar.com', 'noreply');
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");
+        $this->email->from($this->config->item('smtp_user'), 'noreply@seminar.com');
         $this->email->to($email);
-        $this->email->bcc('isankhairul@gmail.com');
+        //$this->email->bcc('isankhairul@gmail.com');
         $this->email->subject('Konfirmasi akun semainar.com');
-        $this->email->message('Testing the email class.');
+        $this->email->message($message);
         $this->email->send();
     }
 
