@@ -77,7 +77,7 @@ class M_seminar extends CI_Model {
         $tema = strtoupper( preg_replace("/(?i)[aiueo]|\s+/", "", $detail_seminar->tema) );
         
         $count_order = $this->db->query("SELECT COUNT(*) AS coupon_num FROM `seminar_order` WHERE seminar_id = '" . $seminar_id . "'")->row_array();
-        $coupun_num = (isset($count_order['coupon_num']) && $count_order['coupon_num'] > 0) ? $count_order['coupon_num'] : 1;
+        $coupun_num = ($count_order['coupon_num'] + 1);
         
         $serial_num = str_pad($coupun_num, 4, '0', STR_PAD_LEFT);
         $serial = $tema . "-" . $serial_num; 

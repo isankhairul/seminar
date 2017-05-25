@@ -57,6 +57,21 @@
                                 <input type="text" class="form-control" id="phone" name="phone" maxlength="13" placeholder="No telp" autocomplete="off"  value="<?php echo (!empty($getDetail['phone']) ? $getDetail['phone'] : '') ?>">
                             </div>
                             <div class="form-group">
+                                <label>Status Seminar</label>
+                                <select name="status" class="form-control">
+                                    <?php
+                                    $status = array(0 => "Non Active",
+                                        1 => "Active");
+                                    foreach ($status as $key => $item) {
+                                        ?>
+                                        <option value="<?php echo $key; ?>" <?php echo ($getDetail['status'] == $key) ? 'selected' : ''; ?>> 
+                                            <?php echo $item; ?> 
+                                        </option>
+
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="input_file">Photo</label>
                                 <input type="file" id="photo" name="photo">
                                 <p class="help-block">Photo</p>

@@ -154,6 +154,7 @@ class C_member extends MY_Controller {
         $dataUpdate = array(
             'firstname' => $post['firstname'],
             'lastname' => $post['lastname'],
+            'status' => $post['status'],
             'phone' => $post['phone']
         );
         if (!empty($_FILES['photo']['name'])) {
