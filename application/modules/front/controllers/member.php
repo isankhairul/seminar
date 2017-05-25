@@ -55,7 +55,7 @@ class Member extends MY_Controller {
             redirect(site_url('login' . '?tab=register'));
         }
 
-        $file_name = base_url('/assets/uploads/member/display/100/150/no-photo.png');
+        $file_name = base_url('/assets/uploads/no-photo.png');
         if (!empty($_FILES['photo_mhs']['name'])) {
             $filename = $this->upload_image($_FILES['photo_mhs']);
             $file_name = base_url('/assets/uploads/member/display/100/150/' . $filename);

@@ -69,8 +69,8 @@
 								<td><?php echo $value['phone'] ?></td>
 								<td><?php echo ($value['status'] == 1 ? 'active' : 'Non Active') ?></td>
 								<td class="text-center">
-								    <a href="<?php echo site_url('backend/c_member/v_member/'.$value['id_member'])?>" >Edit</a>  
-								    | <a id="delete_mhs" id_member="<?php echo $value['id_member']?>" >Delete</td>
+								    <a href="<?php echo site_url('backend/c_member/v_member/'.$value['member_id'])?>" >Edit</a>  
+								    | <a id="delete_mhs" member_id="<?php echo $value['member_id']?>" >Delete</td>
 							</tr>  
 							<?php }  ?>
 							</tbody>
@@ -147,12 +147,12 @@
 </script>
 <script>
 $(document).on("click","#delete_mhs", function(){
-    var answer = confirm("Are you sure you want to Delete Mahasiswa ID = "+$(this).attr('id_member')+' ?');
+    var answer = confirm("Are you sure you want to Delete Mahasiswa ID = "+$(this).attr('member_id')+' ?');
     if(answer){
              $.ajax({
                 type: "POST",
                 url: base_url+'backend/c_member/do_delete',
-                data: {id : $(this).attr('id_member')},
+                data: {id : $(this).attr('member_id')},
                 dataType: "json",
                 success: function(result){				
                     switch(result.returnVal){

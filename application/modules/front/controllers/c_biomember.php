@@ -42,7 +42,7 @@ class C_biomember extends MY_Controller {
             'modified_date' => date('Y-m-d H:i:s')
         );
         
-        $file_name = base_url('/assets/uploads/member/display/100/150/no-photo.png');
+        $file_name = base_url('/assets/uploads/no-photo.png');
         if (!empty($_FILES['photo']['name'])) {
             $filename = $this->upload_image($_FILES['photo']);
             $file_name = base_url('/assets/uploads/member/display/100/150/' . $filename);
@@ -117,50 +117,6 @@ class C_biomember extends MY_Controller {
         }
     }
 
-    function list_sertifikat() {
-        //pagination settings
-        $member_id = $this->sessionData['member_id'];
-        $data['listSeminar_member'] = array();
-        $config['base_url'] = site_url('front/c_biomember/list_seminar');
-        $config['total_rows'] = $this->m_register->count_sertifikat($member_id);
-        $config['per_page'] = "5";
-        $config["uri_segment"] = 4;
-        $choice = $config["total_rows"] / $config["per_page"];
-        $config["num_links"] = floor($choice);
-
-        //config for bootstrap pagination class integration
-        $config['full_tag_open'] = '<ul class="pagination">';
-        $config['full_tag_close'] = '</ul>';
-        $config['first_link'] = false;
-        $config['last_link'] = false;
-        $config['first_tag_open'] = '<li>';
-        $config['first_tag_close'] = '</li>';
-        $config['prev_link'] = '&laquo';
-        $config['prev_tag_open'] = '<li class="prev">';
-        $config['prev_tag_close'] = '</li>';
-        $config['next_link'] = '&raquo';
-        $config['next_tag_open'] = '<li>';
-        $config['next_tag_close'] = '</li>';
-        $config['last_tag_open'] = '<li>';
-        $config['last_tag_close'] = '</li>';
-        $config['cur_tag_open'] = '<li class="active"><a href="#">';
-        $config['cur_tag_close'] = '</a></li>';
-        $config['num_tag_open'] = '<li>';
-        $config['num_tag_close'] = '</li>';
-
-        $this->pagination->initialize($config);
-        $data['page'] = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
-
-        //call the model function to get the department data
-        $data['start'] = $this->uri->segment(4, 0);
-        $data['listSeminar_member'] = $this->m_register->list_sertifikatMHS($config["per_page"], $data['page'], $member_id);
-        //echo $this->db->last_query();
-        $data['pagination'] = $this->pagination->create_links();
-        //echo '<pre>',print_r($data);
-
-        $this->frview('v_list_sertifikat_member', $data);
-    }
-
     private function upload_image($image) {
         $data = array();
         $config['upload_path'] = FCPATH . 'assets/uploads/member';
@@ -217,7 +173,7 @@ class C_biomember extends MY_Controller {
     public function list_seminar() {
         //pagination settings
         $member_id = $this->sessionData['member_id'];
-        $data['listSeminar_member'] = array();
+        $data['list_seminar_member'] = array();
         $config['base_url'] = site_url('front/c_biomember/list_seminar');
         $config['total_rows'] = $this->m_register->count_seminar($member_id);
         $config['per_page'] = "5";
@@ -250,63 +206,29 @@ class C_biomember extends MY_Controller {
 
         //call the model function to get the department data
         $data['start'] = $this->uri->segment(4, 0);
-        $data['listSeminar_member'] = $this->m_register->list_seminarMHS($config["per_page"], $data['page'], $member_id);
-        //echo $this->db->last_query();
+        $data['list_seminar_member'] = $this->m_register->list_seminar_member($config["per_page"], $data['page'], $member_id);
+        
         $data['pagination'] = $this->pagination->create_links();
-        //echo '<pre>',print_r($data);
 
         $this->frview('v_list_seminar_member', $data);
     }
 
     public function cetak_ticket($id_order = '') {
-        //$id_order = $this->input->get('id_order');
         $data['ticket_seminar'] = array();
         $data['ticket_seminar'] = $this->m_register->ticket_seminar($id_order);
-        //echo $data['ticket_seminar']->serial;
-        //echo '<pre>',print_r($data);
         $this->load->library('Barcode39');
         $bc = new Barcode39($data['ticket_seminar']->serial);
         $bc->draw(trim($data['ticket_seminar']->serial . ".gif"));
-        //$this->load->view('print_test', $data);exit;
         include_once APPPATH . '/third_party/mpdf/mpdf.php';
         $html = $this->load->view('ticket', $data, true);
         $this->mpdf = new mPDF('utf-8', array(250, 100));
-        $file_name = $data['ticket_seminar']->tema_seminar . '-' . $data['ticket_seminar']->nim_member;
+        $file_name = $data['ticket_seminar']->tema . '-' . $data['ticket_seminar']->email;
 
-        $stylesheet = file_get_contents('http://localhost/seminar/assets/frontend/css/print_ticket.css'); // external css
+        $stylesheet = file_get_contents(base_url('assets/frontend/css/print_ticket.css')); // external css
         $this->mpdf->WriteHTML($stylesheet, 1);
         $this->mpdf->WriteHTML($html);
         $this->mpdf->Output($file_name . '.pdf', 'D'); // download force
         $this->mpdf->Output($file_name . '.pdf', 'I'); // view in the explorer
-    }
-
-    public function cetak_sertifikat($id_order = '') {
-        //$id_order = $this->input->get('id_order');
-        include_once APPPATH . '/third_party/mpdf/mpdf.php';
-        $data['ticket_seminar'] = array();
-        $data['ticket_seminar'] = $this->m_register->ticket_seminar($id_order);
-        //echo $data['ticket_seminar']->serial;
-        //echo '<pre>',print_r($data);
-        $this->load->library('Barcode39');
-        $bc = new Barcode39($data['ticket_seminar']->serial);
-        $bc->draw(trim($data['ticket_seminar']->serial . ".gif"));
-        //$this->load->view('sertifikat', $data);
-        $file_name = 'SERTIFIKAT-' . $data['ticket_seminar']->tema_seminar . '-' . $data['ticket_seminar']->nim_member . '.pdf';
-        $html = $this->load->view('sertifikat', $data, true);
-        $this->mpdf = new mPDF();
-        $stylesheet = file_get_contents('http://localhost/seminar/assets/frontend/css/bootstrap.css'); // external css
-
-        $this->mpdf->AddPage('L', // L - landscape, P - portrait
-                '', '', '', '', 10, // margin_left
-                10, // margin right
-                10, // margin top
-                10, // margin bottom
-                18, // margin header
-                12); // margin footer
-        $this->mpdf->WriteHTML($html);
-        $this->mpdf->Output($file_name, 'D'); // download force
-        $this->mpdf->Output($file_name, 'I'); // view in the explorer
-        // for more information rhonalejandro@gmail.com
     }
 
     public function cetak_all_info_seminar($member_id = '') {

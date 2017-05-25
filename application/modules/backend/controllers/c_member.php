@@ -154,7 +154,6 @@ class C_member extends MY_Controller {
         $dataUpdate = array(
             'firstname' => $post['firstname'],
             'lastname' => $post['lastname'],
-            'email' => $post['email'],
             'phone' => $post['phone']
         );
         if (!empty($_FILES['photo']['name'])) {
@@ -162,7 +161,7 @@ class C_member extends MY_Controller {
             $file_name = base_url('/assets/uploads/member/display/100/150/' . $filename);
             $dataUpdate = array_merge($dataUpdate, array('photo' => $file_name));
         }
-        $updateMhs = $this->m_member->UpdateData('member', $dataUpdate, array('id_member' => $id));
+        $updateMhs = $this->m_member->UpdateData('member', $dataUpdate, array('member_id' => $id));
         if ($updateMhs) {
             $this->session->set_flashdata('infoUpdateMember', 'Data Member Berhasil Di Update');
             redirect('member');
@@ -174,10 +173,9 @@ class C_member extends MY_Controller {
 
     public function do_delete($id = '') {
         $id = $this->input->post('id');
-        $data = array('status_member' => 2);
-        $where = array('id_member' => $id);
+        $where = array('member_id' => $id);
 
-        $delete_member = $this->m_member->UpdateData('member', $data, $where);
+        $delete_member = $this->m_member->deleteData('member', $where);
         if ($delete_member) {
             $alert = 'Data Berhasil Di Hapus';
             $returnVal = 'success';
@@ -189,7 +187,7 @@ class C_member extends MY_Controller {
         echo json_encode((object) array('alert' => $alert, 'returnVal' => $returnVal));
     }
 
-    public function change_password_mhs() {
+    public function change_password_member() {
         $id = $this->input->post('id');
         $this->form_validation->set_rules('password', 'Password', 'required|matches[retype_password]');
         $this->form_validation->set_rules('retype_password', 'Retype Password', 'required');
@@ -206,8 +204,8 @@ class C_member extends MY_Controller {
             $this->doview('v_member_b', $data);
         } else {
             $post = $this->input->post();
-            $updatePassMhs = $this->m_member->UpdateData('member', array('password_member' => encryptPass($post['password'])), array('id_member' => $id));
-            if ($updatePassMhs) {
+            $update_member= $this->m_member->UpdateData('member', array('password' => encryptPass($post['password'])), array('member_id' => $id));
+            if ($update_member) {
                 $this->session->set_flashdata('infoChangePasswordMhs', 'Data Password Berhasil Di Update');
                 redirect('member');
             } else {

@@ -49,19 +49,15 @@ class M_register extends CI_Model {
     }
 
     function insertData($table, $data) {
-
         $query = $this->db->insert($table, $data);
-
         if ($query) {
             return true;
         } else {
-
             return false;
         }
     }
 
     function updateData($table, $data, $where) {
-
         $this->db->where($where);
         $query = $this->db->update($table, $data);
 
@@ -86,9 +82,9 @@ class M_register extends CI_Model {
     }
 
     function count_seminar($member_id) {
-        $this->db->select('ord.id_order');
-        $this->db->from('order ord');
-        $this->db->join('seminar smr', 'ord.id_seminar = smr.id_seminar');
+        $this->db->select('ord.order_id');
+        $this->db->from('seminar_order ord');
+        $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
         $this->db->where('ord.member_id', $member_id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -99,11 +95,10 @@ class M_register extends CI_Model {
     }
 
     function count_sertifikat($member_id) {
-        $this->db->select('ord.id_order');
+        $this->db->select('ord.order_id');
         $this->db->from('order ord');
-        $this->db->join('seminar smr', 'ord.id_seminar = smr.id_seminar');
+        $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
         $this->db->where('ord.member_id', $member_id);
-        $this->db->where('ord.used_sertifikat', 1);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->num_rows();
@@ -112,13 +107,12 @@ class M_register extends CI_Model {
         }
     }
 
-    function list_seminarMHS($limit, $start, $member_id) {
-        $this->db->select('ord.*, m.*, smr.*,tk.*');
-        $this->db->from('order ord');
+    function list_seminar_member($limit, $start, $member_id) {
+        $this->db->select('ord.*, m.*, smr.*');
+        $this->db->from('seminar_order ord');
         $this->db->join('member m', 'ord.member_id = m.member_id');
-        $this->db->join('seminar smr', 'ord.id_seminar = smr.id_seminar');
-        $this->db->join('ticket_manual tk', 'ord.id_ticket = tk.id_ticket');
-        $this->db->where('m.member_id', $member_id);
+        $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
+        $this->db->where('ord.member_id', $member_id);
         $this->db->limit($limit, $start);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -128,14 +122,12 @@ class M_register extends CI_Model {
         }
     }
 
-    function list_sertifikatMHS($limit, $start, $member_id) {
+    function list_sertifikat_member($limit, $start, $member_id) {
         $this->db->select('ord.*, m.*, smr.*,tk.*');
-        $this->db->from('order ord');
+        $this->db->from('seminar_order ord');
         $this->db->join('member m', 'ord.member_id = m.member_id');
-        $this->db->join('seminar smr', 'ord.id_seminar = smr.id_seminar');
-        $this->db->join('ticket_manual tk', 'ord.id_ticket = tk.id_ticket');
-        $this->db->where('m.member_id', $member_id);
-        $this->db->where('ord.used_sertifikat', 1);
+        $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
+        $this->db->where('ord.member_id', $member_id);
         $this->db->limit($limit, $start);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -145,13 +137,12 @@ class M_register extends CI_Model {
         }
     }
 
-    function ticket_seminar($id_order) {
-        $this->db->select('ord.*, m.*, smr.*,tk.*');
-        $this->db->from('order ord');
+    function ticket_seminar($order_id) {
+        $this->db->select('ord.*, m.*, smr.*');
+        $this->db->from('seminar_order ord');
         $this->db->join('member m', 'ord.member_id = m.member_id');
-        $this->db->join('seminar smr', 'ord.id_seminar = smr.id_seminar');
-        $this->db->join('ticket_manual tk', 'ord.id_ticket = tk.id_ticket');
-        $this->db->where('ord.id_order', $id_order);
+        $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
+        $this->db->where('ord.order_id', $order_id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -161,15 +152,10 @@ class M_register extends CI_Model {
     }
 
     function all_seminar($member_id) {
-        $this->db->select('ord.*, m.*, smr.*,tk.*,jrf.nama_jurusan, f.nama_fakultas');
-        $this->db->from('order ord');
+        $this->db->select('ord.*, m.*, smr.*,');
+        $this->db->from('seminar_order ord');
         $this->db->join('member m', 'ord.member_id = m.member_id');
-        $this->db->join('jurusan_fakultas jrf', 'm.id_jurusan_fak = jrf.id_jurusan_fakultas');
-        $this->db->join('fakultas f', 'f.id_fakultas = jrf.id_fakultas');
-        $this->db->join('seminar smr', 'ord.id_seminar = smr.id_seminar');
-        $this->db->join('ticket_manual tk', 'ord.id_ticket = tk.id_ticket');
         $this->db->where('ord.member_id', $member_id);
-        $this->db->where('ord.used_sertifikat', 1);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result_array();

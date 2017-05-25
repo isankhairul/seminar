@@ -56,7 +56,7 @@
                                             <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" value="<?php echo (!empty($member['firstname'])) ? $member['firstname'] : $this->session->flashdata('firstname'); ?>" required="required">
                                         </div>
                                         <div class="form-group">
-                                            <label for="lastname">Nama Belakang</label>
+                                            <label for="lastname">Lastname</label>
                                             <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" value="<?php echo (!empty($member['lastname'])) ? $member['lastname'] : $this->session->flashdata('lastname'); ?>" required="required">
                                         </div>
 

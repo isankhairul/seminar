@@ -35,7 +35,7 @@ class M_member extends CI_Model {
     function getDetailMember($where) {
         $this->db->select('m.*');
         $this->db->from('member m');
-        $this->db->where('m.id_member', $where);
+        $this->db->where('m.member_id', $where);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->row_array();

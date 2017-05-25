@@ -39,49 +39,43 @@
                             ?>
                         </div>
                         <form action="<?php echo site_url('backend/c_member/edit_member') ?>" method="POST" id="form_edit_member" type_form="<?php echo $type_form; ?>" enctype="multipart/form-data">
-                            <input class="form-control" placeholder="id" name="id" type="hidden" readonly="true" value="<?php echo (isset($getDetail['id_member']) ? $getDetail['id_member'] : '') ?>"></input>
+                            <input class="form-control" placeholder="id" name="id" type="hidden" readonly="true" value="<?php echo (isset($getDetail['member_id']) ? $getDetail['member_id'] : '') ?>"></input>
                             <div class="form-group">
-                                <label for="NIMmember">NIM Member</label>
-                                <input type="text" class="form-control" id="NIMmhs" name="NIMmhs" placeholder="NIM" autocomplete="off" value="<?php echo (!empty($getDetail['nim_member']) ? $getDetail['nim_member'] : '') ?>" disabled="disabled">
-                                <span style="color : red; font-size : 10px">* Harap Masukan NIM yang sesuai dengan KTM (Kartu tanda member)</span>
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="email" autocomplete="off" value="<?php echo (!empty($getDetail['email']) ? $getDetail['email'] : '') ?>" disabled="disabled">
                             </div>
                             <div class="form-group">
-                                <label for="NamaDepan">Nama</label>
-                                <input type="text" class="form-control" id="nama_mhs" name="nama_mhs" placeholder="Nama" autocomplete="off" value="<?php echo (!empty($getDetail['nama_depan']) ? $getDetail['nama_depan'] : '') ?>">
+                                <label for="firstname">Firstname</label>
+                                <input type="text" class="form-control" id="firstname" name="firstname" placeholder="firstname" autocomplete="off" value="<?php echo (!empty($getDetail['firstname']) ? $getDetail['firstname'] : '') ?>">
                             </div>				  	
                             <div class="form-group">
-                                <label for="Emailmember">Email Member</label>
-                                <input type="email" class="form-control" id="emailmhs" name="emailmhs" placeholder="email" autocomplete="off"  value="<?php echo (!empty($getDetail['email_member']) ? $getDetail['email_member'] : '') ?>" required pattern="[a-zA-Z0-9_.]+@[a-zA-Z0-9\-\_]+\.[a-z.]+">
+                                <label for="lastname">Lastname</label>
+                                <input type="text" class="form-control" id="lastname" name="lastname" placeholder="lastname" autocomplete="off"  value="<?php echo (!empty($getDetail['lastname']) ? $getDetail['lastname'] : '') ?>">
                             </div>
                             <div class="form-group">
-                                <label for="alamatmhs">Alamat Member</label>
-                                <textarea class="form-control" id="alamat_mhs" name="alamat_mhs"><?php echo (!empty($getDetail['alamat_member']) ? $getDetail['alamat_member'] : '') ?></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="telepon_mhs">Telepon Member</label>
-                                <input type="text" class="form-control" id="telp_mhs" name="telp_mhs" maxlength="13" placeholder="No telp" autocomplete="off"  value="<?php echo (!empty($getDetail['telp_member']) ? $getDetail['telp_member'] : '') ?>">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control" id="phone" name="phone" maxlength="13" placeholder="No telp" autocomplete="off"  value="<?php echo (!empty($getDetail['phone']) ? $getDetail['phone'] : '') ?>">
                             </div>
                             <div class="form-group">
                                 <label for="input_file">Photo</label>
-                                <input type="file" id="photo_mhs" name="photo_mhs">
-                                <p class="help-block">Photo Member</p>
-                                <img class="img-thumbnail" src="<?php echo (!empty($getDetail['photo_member']) ? $getDetail['photo_member'] : '') ?>">
+                                <input type="file" id="photo" name="photo">
+                                <p class="help-block">Photo</p>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
 
                     </div>
                     <div class="col-md-6">
-                        <form action="<?php echo site_url('backend/c_member/change_password_mhs') ?>" method="post" id="form_fakultas" type_form="<?php echo $type_form; ?>">
-                            <?php if (isset($getDetail['id_member'])) { ?>
-                                <input class="form-control" placeholder="id" name="id" type="hidden" readonly="true" value="<?php echo (isset($getDetail['id_member']) ? $getDetail['id_member'] : '') ?>"></input>
+                        <form action="<?php echo site_url('backend/c_member/change_password_member') ?>" method="post" id="form_fakultas" type_form="<?php echo $type_form; ?>">
+                            <?php if (isset($getDetail['member_id'])) { ?>
+                                <input class="form-control" placeholder="id" name="id" type="hidden" readonly="true" value="<?php echo (isset($getDetail['member_id']) ? $getDetail['member_id'] : '') ?>"></input>
                             <?php } ?>	
                             <div class="form-group">
-                                <label for="NIMmember">Change Password</label>
+                                <label for="password">Change Password</label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="NamaDepan">Retype Change Password</label>
+                                <label for="password">Retype Change Password</label>
                                 <input type="password" class="form-control" id="retype_password" name="retype_password" placeholder="Retype Password" autocomplete="off">
                             </div>	
                             <button type="submit" class="btn btn-primary">Submit</button>
