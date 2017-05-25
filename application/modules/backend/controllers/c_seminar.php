@@ -26,8 +26,8 @@ class C_seminar extends MY_Controller {
 
     public function index() {
         //pagination settings
-        $session_searchMahasiswa = $this->session->userdata('pencarian_seminar');
-        if (isset($session_searchMahasiswa)) {
+        $session_search_seminar = $this->session->userdata('pencarian_seminar');
+        if (isset($session_search_seminar)) {
             $this->session->unset_userdata('pencarian_seminar');
         }
         $config['base_url'] = site_url('backend/c_seminar/index');
@@ -127,8 +127,6 @@ class C_seminar extends MY_Controller {
 
         $data["pagination"] = $this->pagination->create_links();
         $this->doview('list_seminar', $data);
-
-        //$this->load->view('search/hasil',$data);
     }
 
     public function v_seminar($id = '') {
@@ -201,9 +199,6 @@ class C_seminar extends MY_Controller {
 
         $data["pagination"] = $this->pagination->create_links();
         $data['list_peserta'] = $this->m_seminar->list_PesertaSeminar($batas, $offset, $search_peserta, $seminar_id);
-        
-        //echo '<pre>';
-//        print_r($data); die();
         
         $this->doview('list_PesertaSeminar', $data);
     }

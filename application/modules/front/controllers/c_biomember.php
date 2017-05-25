@@ -213,9 +213,9 @@ class C_biomember extends MY_Controller {
         $this->frview('v_list_seminar_member', $data);
     }
 
-    public function cetak_ticket($id_order = '') {
+    public function cetak_ticket($order_id = '') {
         $data['ticket_seminar'] = array();
-        $data['ticket_seminar'] = $this->m_register->ticket_seminar($id_order);
+        $data['ticket_seminar'] = $this->m_register->ticket_seminar($order_id);
         $this->load->library('Barcode39');
         $bc = new Barcode39($data['ticket_seminar']->serial);
         $bc->draw(trim($data['ticket_seminar']->serial . ".gif"));
@@ -231,48 +231,6 @@ class C_biomember extends MY_Controller {
         $this->mpdf->Output($file_name . '.pdf', 'I'); // view in the explorer
     }
 
-    public function cetak_all_info_seminar($member_id = '') {
-        //$id_order = $this->input->get('id_order');
-        include_once APPPATH . '/third_party/mpdf/mpdf.php';
-        $data['all_seminar'] = array();
-        $data['all_seminar'] = $this->m_register->all_seminar($member_id);
-        //echo '<pre>',print_r($data);die;
-        //$this->load->view('report_all_seminar', $data);
-        $file_name = 'REPORT.pdf';
-        $html = $this->load->view('report_all_seminar', $data, true);
-        $this->mpdf = new mPDF();
-        $stylesheet = file_get_contents('../assets/frontend/css/style_all_seminar.css'); // external css
-
-        $this->mpdf->AddPage('P', // L - landscape, P - portrait
-                '', '', '', '', 10, // margin_left
-                10, // margin right
-                10, // margin top
-                10, // margin bottom
-                18, // margin header
-                12); // margin footer
-        $this->mpdf->WriteHTML($html);
-        $this->mpdf->Output($file_name, 'D'); // download force
-        $this->mpdf->Output($file_name, 'I'); // view in the explorer*/
-        // for more information rhonalejandro@gmail.com
-    }
-
-    public function Make_PDF($view, $data, $file_name) {
-        include_once APPPATH . '/third_party/mpdf/mpdf.php';
-        $html = $this->load->view($view, $data, true);
-        $this->mpdf = new mPDF();
-        $this->stylesheet = file_get_contents('css/style.css');
-        $this->mpdf->AddPage('L', // L - landscape, P - portrait
-                '', '', '', '', 70, // margin_left
-                30, // margin right
-                30, // margin top
-                30, // margin bottom
-                18, // margin header
-                12); // margin footer
-        $this->mpdf->WriteHTML($html);
-        //$this->mpdf->Output($file_name, 'D'); // download force
-        $this->mpdf->Output($file_name, 'I'); // view in the explorer
-        // for more information rhonalejandro@gmail.com
-    }
 
 }
 
