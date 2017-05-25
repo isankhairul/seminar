@@ -217,7 +217,6 @@ function daftar(seminar_id) {
             },
             dataType: 'json',
             success: function (results) {
-                console.log(results);
                 if (results.status == "success") {
                     alert("Terima kasih, Anda telah terdaftar di seminar");
                     location.href = results.location;

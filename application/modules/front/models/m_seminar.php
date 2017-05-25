@@ -51,7 +51,6 @@ class M_seminar extends CI_Model {
     }
 
     function updateData($table, $data, $where) {
-
         $this->db->where($where);
         $query = $this->db->update($table, $data);
 
@@ -71,6 +70,19 @@ class M_seminar extends CI_Model {
         } else {
             return false;
         }
+    }
+    
+    function generate_serial_order($seminar_id) {
+        $detail_seminar = $this->getDetData("seminar", array('seminar_id' => $seminar_id));
+        $tema = strtoupper( preg_replace("/(?i)[aiueo]|\s+/", "", $detail_seminar->tema) );
+        
+        $count_order = $this->db->query("SELECT COUNT(*) AS coupon_num FROM `seminar_order` WHERE seminar_id = '" . $seminar_id . "'")->row_array();
+        $coupun_num = (isset($count_order['coupon_num']) && $count_order['coupon_num'] > 0) ? $count_order['coupon_num'] : 1;
+        
+        $serial_num = str_pad($coupun_num, 4, '0', STR_PAD_LEFT);
+        $serial = $tema . "-" . $serial_num; 
+        
+        return $serial;
     }
 
 }

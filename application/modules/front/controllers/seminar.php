@@ -16,27 +16,26 @@ class Seminar extends MY_Controller {
           $this->frview('v_allSeminar',$data); */
     }
 
+    
+
     public function submit_order() {
 
         $post = $this->input->post();
         $seminar_id = $post['seminar_id'];
         $email_member = $post['email_member'];
-        
-        $detail_seminar = $this->m_seminar->getDetData('seminar', array('seminar_id' => seminar_id));
-        $detail_member = $this->m_seminar->getDetData('member', array('email' => $email_member));
-        
-        echo '<pre>';        print_r($detail_member);  die('');
-        
-        $data['seminar_order'] = array('seminar_id' => $seminar_id,
-                                        'member_id' => $detail_member->member_id,
-                                        'serial' => '',
-                                        'create_date' => date("Y-m-d H:i:s")
-                                    );
 
+        $detail_seminar = $this->m_seminar->getDetData('seminar', array('seminar_id' => $seminar_id));
+        $detail_member = $this->m_seminar->getDetData('member', array('email' => $email_member));
+        $member_id = $detail_member->member_id;
         
+        $serial = $this->m_seminar->generate_serial_order($seminar_id);
+        
+//        echo '<pre>';
+//        print_r($detail_seminar);
+//        die('');
 
         // check member daftar seminar;
-        $check_order_seminar = $this->m_seminar->getDetData('seminar_order', array('email_member' => $email_member, 'seminar_id' => $seminar_id));
+        $check_order_seminar = $this->m_seminar->getDetData('seminar_order', array('member_id' => $member_id, 'seminar_id' => $seminar_id));
         if ($check_order_seminar) {
             echo json_encode(array('status' => 'error', 'alert' => 'Maaf , anda sudah pernah mengikuti seminar ini.'));
             return false;
@@ -46,6 +45,24 @@ class Seminar extends MY_Controller {
             echo json_encode(array('status' => 'error', 'alert' => 'maaf kuota seminar sudah habis'));
             return false;
         }
+        
+        $data['seminar_order'] = array('seminar_id' => $seminar_id,
+            'member_id' => $detail_member->member_id,
+            'serial' => $serial,
+            'created_date' => date("Y-m-d H:i:s")
+        );
+        
+        $insert_seminar_order = $this->m_seminar->insertData("seminar_order", $data['seminar_order']);
+        
+        if(!$insert_seminar_order){
+            echo json_encode(array('status' => 'error', 'alert' => 'Maaf ada kesalahan, silahkan check ke bagian IT'));
+            return false;
+        }
+        
+        $sisa_kuota = ($detail_seminar->sisa_kuota - 1);
+        $this->m_seminar->updateData("seminar", array("sisa_kuota" => $sisa_kuota), array('seminar_id' => $seminar_id));
+        echo json_encode(array('status' => 'success', 'location' => base_url(), $data));
+        
     }
 
 }
