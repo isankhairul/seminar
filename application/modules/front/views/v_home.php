@@ -230,6 +230,5 @@ function daftar(seminar_id) {
             }
         });
     }
-
 }
 </script>

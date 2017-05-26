@@ -187,7 +187,7 @@
         var email = $('#order_email').val();
         
         if (!email || !seminar_id) {
-            alert('Maaf, Anda harus login sebelum mendaftar!');
+            alert('Email harus diisi !');
             return false;
         }
         
