@@ -10,14 +10,6 @@ class Seminar extends MY_Controller {
         $this->load->model(array('m_seminar'));
     }
 
-    public function index() {
-        /* $today = date('Y-m-d H:i:s');
-          $data['seminar'] = $this->m_seminar->getDataSeminar('seminar', array('status_seminar' => 1, 'DATE_FORMAT(jadwal_seminar, "%Y-%m-%d %H:%i:%s") >=' => $today), 'jadwal_seminar desc');
-          $this->frview('v_allSeminar',$data); */
-    }
-
-    
-
     public function submit_order() {
 
         $post = $this->input->post();
@@ -64,6 +56,24 @@ class Seminar extends MY_Controller {
         $this->m_seminar->updateData("seminar", array("sisa_kuota" => $sisa_kuota), array('seminar_id' => $seminar_id));
         echo json_encode(array('status' => 'success', 'location' => base_url(), $data));
         
+    }
+    
+    public function cetak_ticket($order_id = '') {
+        $data['ticket_seminar'] = array();
+        $data['ticket_seminar'] = $this->m_seminar->ticket_seminar($order_id);
+        $this->load->library('Barcode39');
+        $bc = new Barcode39($data['ticket_seminar']->serial);
+        $bc->draw(trim($data['ticket_seminar']->serial . ".gif"));
+        include_once APPPATH . '/third_party/mpdf/mpdf.php';
+        $html = $this->load->view('ticket', $data, true);
+        $this->mpdf = new mPDF('utf-8', array(250, 100));
+        $file_name = $data['ticket_seminar']->tema . '-' . $data['ticket_seminar']->email;
+
+        $stylesheet = file_get_contents(base_url('assets/frontend/css/print_ticket.css')); // external css
+        $this->mpdf->WriteHTML($stylesheet, 1);
+        $this->mpdf->WriteHTML($html);
+        $this->mpdf->Output($file_name . '.pdf', 'D'); // download force
+        $this->mpdf->Output($file_name . '.pdf', 'I'); // view in the explorer
     }
 
 }

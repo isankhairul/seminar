@@ -30,7 +30,7 @@
                                     <td><?php echo $value['tempat'] ?></td>
                                     <td><?php echo $value['pembicara'] ?></td>
                                     <td><?php echo $value['serial'] ?></td>
-                                    <td class="text-center"><a href="<?php echo site_url('front/c_biomember/cetak_ticket/' . $value['order_id']) ?>"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> Ticket </a></td>
+                                    <td class="text-center"><a href="<?php echo site_url('front/seminar/cetak_ticket/' . $value['order_id']) ?>"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> Ticket </a></td>
                                 </tr>
                             <?php } ?>
 

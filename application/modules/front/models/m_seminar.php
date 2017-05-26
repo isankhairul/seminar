@@ -85,6 +85,20 @@ class M_seminar extends CI_Model {
         return $serial;
     }
 
+    function ticket_seminar($order_id) {
+        $this->db->select('ord.*, m.*, smr.*');
+        $this->db->from('seminar_order ord');
+        $this->db->join('member m', 'ord.member_id = m.member_id');
+        $this->db->join('seminar smr', 'ord.seminar_id = smr.seminar_id');
+        $this->db->where('ord.order_id', $order_id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
+    
 }
 
 ?>

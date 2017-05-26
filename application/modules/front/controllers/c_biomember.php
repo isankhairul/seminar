@@ -213,25 +213,6 @@ class C_biomember extends MY_Controller {
         $this->frview('v_list_seminar_member', $data);
     }
 
-    public function cetak_ticket($order_id = '') {
-        $data['ticket_seminar'] = array();
-        $data['ticket_seminar'] = $this->m_register->ticket_seminar($order_id);
-        $this->load->library('Barcode39');
-        $bc = new Barcode39($data['ticket_seminar']->serial);
-        $bc->draw(trim($data['ticket_seminar']->serial . ".gif"));
-        include_once APPPATH . '/third_party/mpdf/mpdf.php';
-        $html = $this->load->view('ticket', $data, true);
-        $this->mpdf = new mPDF('utf-8', array(250, 100));
-        $file_name = $data['ticket_seminar']->tema . '-' . $data['ticket_seminar']->email;
-
-        $stylesheet = file_get_contents(base_url('assets/frontend/css/print_ticket.css')); // external css
-        $this->mpdf->WriteHTML($stylesheet, 1);
-        $this->mpdf->WriteHTML($html);
-        $this->mpdf->Output($file_name . '.pdf', 'D'); // download force
-        $this->mpdf->Output($file_name . '.pdf', 'I'); // view in the explorer
-    }
-
-
 }
 
 /* End of file users.php */

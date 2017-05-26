@@ -69,7 +69,7 @@
                                 <td><?php echo $Listvalue['email'] ?></td>
                                 <td><?php echo $Listvalue['serial'] ?></td>
                                 <td><?php echo $Listvalue['tema'] ?></td>
-                                <td class="text-center"><a href="<?php echo site_url('front/c_biomember/cetak_ticket/' . $Listvalue['order_id']) ?>"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> Ticket </a></td>
+                                <td class="text-center"><a href="<?php echo site_url('front/seminar/cetak_ticket/' . $Listvalue['order_id']) ?>"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> Ticket </a></td>
                             </tr>
 <?php endforeach; ?>
                     </table>
