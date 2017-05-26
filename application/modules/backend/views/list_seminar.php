@@ -23,31 +23,33 @@
                     </div>
                     <div class="pull-right">
                         <?php echo form_open_multipart('backend/c_seminar/cari', array("id" => "form-search-seminar", "class" => "form-inline", "method" => "POST")); ?>  
-                        <input type="text" name="search_seminar" class="form-control" id="search_seminar" placeholder="search By Tema Seminar" value="<?php $session_searchSeminar = $this->session->userdata('pencarian_seminar');
-                        echo (!empty($session_searchSeminar)) ? $session_searchSeminar : '' ?>" />     
+                        <input type="text" name="search_seminar" class="form-control" id="search_seminar" placeholder="search By Tema Seminar" value="<?php
+                        $session_searchSeminar = $this->session->userdata('pencarian_seminar');
+                        echo (!empty($session_searchSeminar)) ? $session_searchSeminar : ''
+                        ?>" />     
                         <button type="submit" class="btn btn-primary">Cari</button>
                         <a href="<?php echo site_url('backend/c_seminar') ?>" class="btn btn-primary btn-upgrade-mhs">show all</a>
-<?php echo form_close(); ?>						
+                        <?php echo form_close(); ?>						
                     </div>
                 </div>
-<?php if ($this->session->flashdata('infoSeminar')) { ?>
+                <?php if ($this->session->flashdata('infoSeminar')) { ?>
                     <div class="alert alert-success" style="margin: 15px">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Success!</strong> <?php echo $this->session->flashdata('infoSeminar'); ?>
                     </div>
                 <?php } ?>
-<?php if ($this->session->flashdata('infoDeleteUser')) { ?>
+                <?php if ($this->session->flashdata('infoDeleteUser')) { ?>
                     <div class="alert alert-success" style="margin: 15px">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Success!</strong> <?php echo $this->session->flashdata('infoDeleteUser'); ?>
                     </div>
                 <?php } ?>
-<?php if ($this->session->flashdata('infoErrorsPhoto')) { ?>
+                <?php if ($this->session->flashdata('infoErrorsPhoto')) { ?>
                     <div class="alert alert-warning" style="margin: 15px">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Failed!</strong> <?php echo $this->session->flashdata('infoErrorsPhoto'); ?>
                     </div>
-<?php } ?>
+                <?php } ?>
                 <div class="panel-body">
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -77,6 +79,7 @@
                                     <td><?php if (!empty($value['list_peserta'])) { ?><a href="<?php echo site_url('backend/c_seminar/listPeserta/' . $value['seminar_id']) ?>" target="_blank">List Peserta</a><?php } ?></td>	
                                     <td><?php echo (($value['status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Non Active</span>' ); ?></td>								
                                     <td class="text-center">
+                                        <a style="cursor: pointer;" data-seminar-id="<?php echo $value['seminar_id']; ?>" class="manual_order"> Manual Order </a>  |
                                         <a href="<?php echo site_url('backend/c_seminar/v_seminar/' . $value['seminar_id']) ?>" >Edit</a>  
                                         | <a id="delete_seminar" id_delete_seminar="<?php echo $value['seminar_id'] ?>" >Delete</td>
                                 </tr>
@@ -95,6 +98,32 @@
 
 </div><!--/.main-->
 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Manual Seminar Order</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input class="form-control" type="email" id="order_email" name="order_email"  />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="order_seminar_id" id="order_seminar_id" />
+                <button type="button" id="submit_manual_order" class="btn btn-primary btn-lg" style="width:100%">Daftar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 </body>
 
@@ -147,4 +176,42 @@
             });
         }
     })
+    $(document).on("click", ".manual_order", function () {
+        var seminar_id = $(this).data('seminar-id');
+        $('#order_seminar_id').val(seminar_id);
+        $('#myModal').modal('show');
+    });
+    
+    $(document).on("click", "#submit_manual_order", function () {
+        var seminar_id = $('#order_seminar_id').val();
+        var email = $('#order_email').val();
+        
+        if (!email || !seminar_id) {
+            alert('Maaf, Anda harus login sebelum mendaftar!');
+            return false;
+        }
+        
+        $.ajax({
+            type: 'POST',
+            url: "<?php echo base_url('front/seminar/submit_order') ?>",
+            data: {
+                'email_member': email,
+                'seminar_id': seminar_id,
+
+            },
+            dataType: 'json',
+            success: function (results) {
+                if (results.status == "success") {
+                    alert("Terima kasih, Anda telah terdaftar di seminar");
+                } else if (results.status == "error") {
+                    alert(results.alert);
+                } else {
+                    alert(results.alert);
+                }
+                return false;
+            }
+        });
+        
+    });
+
 </script>

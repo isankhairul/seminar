@@ -30,19 +30,20 @@ class Seminar extends MY_Controller {
         
         $serial = $this->m_seminar->generate_serial_order($seminar_id);
         
-//        echo '<pre>';
-//        print_r($detail_seminar);
-//        die('');
+        if(empty($member_id)){
+            echo json_encode(array('status' => 'error', 'alert' => 'Maaf, email yang diinput tidak terdaftar.'));
+            return false;
+        }
 
         // check member daftar seminar;
         $check_order_seminar = $this->m_seminar->getDetData('seminar_order', array('member_id' => $member_id, 'seminar_id' => $seminar_id));
         if ($check_order_seminar) {
-            echo json_encode(array('status' => 'error', 'alert' => 'Maaf , anda sudah pernah mengikuti seminar ini.'));
+            echo json_encode(array('status' => 'error', 'alert' => 'Maaf, anda sudah pernah mengikuti seminar ini.'));
             return false;
         }
 
         if ($detail_seminar->sisa_kuota <= 0) {
-            echo json_encode(array('status' => 'error', 'alert' => 'maaf kuota seminar sudah habis'));
+            echo json_encode(array('status' => 'error', 'alert' => 'Maaf, kuota seminar sudah habis.'));
             return false;
         }
         
@@ -55,7 +56,7 @@ class Seminar extends MY_Controller {
         $insert_seminar_order = $this->m_seminar->insertData("seminar_order", $data['seminar_order']);
         
         if(!$insert_seminar_order){
-            echo json_encode(array('status' => 'error', 'alert' => 'Maaf ada kesalahan, silahkan check ke bagian IT'));
+            echo json_encode(array('status' => 'error', 'alert' => 'Maaf, ada kesalahan, silahkan check ke bagian IT.'));
             return false;
         }
         

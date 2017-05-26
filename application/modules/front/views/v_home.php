@@ -215,7 +215,7 @@
                                                 success: function (results) {
                                                     if (results.status == "success") {
                                                         alert("Terima kasih, Anda telah terdaftar di seminar");
-                                                        location.href = results.location;
+                                                        window.location.reload();
                                                         return true;
 
                                                     } else if (results.status == "error") {
