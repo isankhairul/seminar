@@ -194,43 +194,42 @@
 <!-- search-scripts -->
 <script src="<?php echo base_url() ?>assets/frontend/js/jquery.event.move.js"></script>
 <script>
-                                    function daftar(seminar_id) {
+function daftar(seminar_id) {
 
-                                        var member_id = "<?php echo $session_member['member_id'] ?>";
-                                        var email_member = "<?php echo $session_member['email'] ?>";
+    var member_id = "<?php echo $session_member['member_id'] ?>";
+    var email_member = "<?php echo $session_member['email'] ?>";
 
-                                        if (!email_member) {
-                                            alert('Maaf, Anda harus login sebelum mendaftar!');
-                                            location.href = "<?php echo base_url('login?ref='); ?>";
-                                        } else {
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: "<?php echo base_url('front/seminar/submit_order') ?>",
-                                                data: {
-                                                    'email_member': email_member,
-                                                    'seminar_id': seminar_id,
+    if (!email_member) {
+        alert('Maaf, Anda harus login sebelum mendaftar!');
+        location.href = "<?php echo base_url('login?ref='); ?>";
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: "<?php echo base_url('front/seminar/submit_order') ?>",
+            data: {
+                'email_member': email_member,
+                'seminar_id': seminar_id,
 
-                                                },
-                                                dataType: 'json',
-                                                success: function (results) {
-                                                    if (results.status == "success") {
-                                                        alert("Terima kasih, Anda telah terdaftar di seminar");
-                                                        window.location.reload();
-                                                        return true;
+            },
+            dataType: 'json',
+            success: function (results) {
+                if (results.status == "success") {
+                    alert("Terima kasih, Anda telah terdaftar di seminar");
+                    window.location.reload();
+                    return true;
 
-                                                    } else if (results.status == "error") {
-                                                        alert(results.alert);
-                                                        window.location.reload();
-                                                    } else {
-                                                        alert(results.alert);
-                                                        window.location.reload();
-                                                    }
+                } else if (results.status == "error") {
+                    alert(results.alert);
+                    window.location.reload();
+                } else {
+                    alert(results.alert);
+                    window.location.reload();
+                }
 
-                                                    return false;
-                                                }
-                                            });
-                                        }
+                return false;
+            }
+        });
+    }
 
-                                    }
-
+}
 </script>
