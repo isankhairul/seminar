@@ -118,8 +118,19 @@
                                     <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" value="<?php echo (!empty(set_value('firstname'))) ? set_value('firstname') : $this->session->flashdata('firstname'); ?>" required="required">
                                 </div>
                                 <div class="form-group">
-                                    <label for="lastname">Nama Belakang</label>
+                                    <label for="lastname">Lastname</label>
                                     <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" value="<?php echo (!empty(set_value('lastname'))) ? set_value('lastname') : $this->session->flashdata('lastname'); ?>" required="required">
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <select class="form-control" id="gender" name="gender">
+                                        <option value="L">Laki-Laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dob">Date of birth</label>
+                                    <input type="date" class="form-control" id="dob" name="dob" value="<?php echo (!empty(set_value('dob'))) ? set_value('dob') : $this->session->flashdata('dob'); ?>" required="required">
                                 </div>
 
                                 <div class="form-group">

@@ -154,6 +154,8 @@ class C_member extends MY_Controller {
         $dataUpdate = array(
             'firstname' => $post['firstname'],
             'lastname' => $post['lastname'],
+            'gender' => $post['gender'],
+            'dob' => $post['dob'],
             'status' => $post['status'],
             'phone' => $post['phone']
         );
@@ -162,8 +164,8 @@ class C_member extends MY_Controller {
             $file_name = base_url('/assets/uploads/member/display/100/150/' . $filename);
             $dataUpdate = array_merge($dataUpdate, array('photo' => $file_name));
         }
-        $updateMhs = $this->m_member->UpdateData('member', $dataUpdate, array('member_id' => $id));
-        if ($updateMhs) {
+        $update_member = $this->m_member->UpdateData('member', $dataUpdate, array('member_id' => $id));
+        if ($update_member) {
             $this->session->set_flashdata('infoUpdateMember', 'Data Member Berhasil Di Update');
             redirect('member');
         } else {

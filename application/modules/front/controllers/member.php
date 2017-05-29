@@ -37,6 +37,8 @@ class Member extends MY_Controller {
         $this->form_validation->set_rules('lastname', 'lastname', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('phone', 'phone', 'required');
+        $this->form_validation->set_rules('gender', 'gender', 'required');
+        $this->form_validation->set_rules('dob', 'dob', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required|matches[repassword]');
         $this->form_validation->set_rules('repassword', 'Retype Password', 'required');
 
@@ -66,6 +68,8 @@ class Member extends MY_Controller {
             'lastname' => trim($post['lastname']),
             'email' => trim($post['email']),
             'phone' => trim($post['phone']),
+            'gender' => trim($post['gender']),
+            'dob' => trim($post['dob']),
             'password' => encryptPass(trim($post['password'])),
             'photo' => $file_name,
             'code_activation' => $code_activation,

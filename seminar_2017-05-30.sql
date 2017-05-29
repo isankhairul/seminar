@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.25)
 # Database: seminar
-# Generation Time: 2017-05-25 15:32:52 +0000
+# Generation Time: 2017-05-29 17:05:20 +0000
 # ************************************************************
 
 
@@ -29,8 +29,10 @@ CREATE TABLE `member` (
   `member_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `firstname` varchar(50) DEFAULT '',
   `lastname` varchar(50) DEFAULT NULL,
-  `email` varchar(50) DEFAULT '',
+  `email` varchar(100) DEFAULT '',
   `password` varchar(50) DEFAULT '',
+  `gender` varchar(2) DEFAULT NULL,
+  `dob` date NOT NULL DEFAULT '0000-00-00',
   `phone` varchar(20) DEFAULT NULL,
   `photo` varchar(255) DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0',
@@ -43,10 +45,11 @@ CREATE TABLE `member` (
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
 
-INSERT INTO `member` (`member_id`, `firstname`, `lastname`, `email`, `password`, `phone`, `photo`, `status`, `code_activation`, `created_date`, `modified_date`)
+INSERT INTO `member` (`member_id`, `firstname`, `lastname`, `email`, `password`, `gender`, `dob`, `phone`, `photo`, `status`, `code_activation`, `created_date`, `modified_date`)
 VALUES
-	(1,'luqmans','hakim','luqman@gmail.com','MmY5OTRlZTJjNTg3ZDJhNmM5ZmVhOTVjMDMwMDk3M2I=','021','http://localhost/seminar/assets/uploads/no-photo.png',1,'uLRswK9Y4vajn6tiXBiY','2017-05-20 12:51:12','2017-05-25 19:52:30'),
-	(3,'rio','josef','rio@gmail.com','Mjk2NTA2OTAyYzY5M2I0NTg3MDdhZDZmN2UyNGE1NDQ=','0812','http://localhost/seminar/assets/uploads/no-photo.png',1,'21f5IEeHx1XIocrdUV46','2017-05-25 17:26:09',NULL);
+	(1,'luqmans','hakim','luqman@gmail.com','MmY5OTRlZTJjNTg3ZDJhNmM5ZmVhOTVjMDMwMDk3M2I=','L','1992-06-16','021','http://localhost/seminar/assets/uploads/no-photo.png',1,'uLRswK9Y4vajn6tiXBiY','2017-05-20 12:51:12','2017-05-25 19:52:30'),
+	(3,'rio','josef','rio@gmail.com','Mjk2NTA2OTAyYzY5M2I0NTg3MDdhZDZmN2UyNGE1NDQ=','L','1990-06-18','0812','http://localhost/seminar/assets/uploads/no-photo.png',1,'21f5IEeHx1XIocrdUV46','2017-05-25 17:26:09',NULL),
+	(4,'pentry','yurhadi','pentry@gmail.com','Mjk2NTA2OTAyYzY5M2I0NTg3MDdhZDZmN2UyNGE1NDQ=','L','1989-08-16','021','http://localhost/seminar/assets/uploads/no-photo.png',1,'k8IgMFlrR1tZhBqRbwHr','2017-05-29 23:53:55',NULL);
 
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -79,9 +82,9 @@ LOCK TABLES `seminar` WRITE;
 
 INSERT INTO `seminar` (`seminar_id`, `user_id`, `tema`, `description`, `jadwal`, `tempat`, `pembicara`, `kuota`, `sisa_kuota`, `poster`, `status`, `created_date`, `modified_date`)
 VALUES
-	(1,1,'Big Data','IT Big Data','2017-07-28 08:55:00','Auditorium Mercu Buana','Agus',50,50,'http://localhost/seminar/assets/uploads/poster_seminar/display/250/400/fypepd7sox.jpg',1,'2017-05-20 12:43:13','2017-05-20 12:46:03'),
+	(1,1,'Big Data','IT Big Data','2017-07-28 08:55:00','Auditorium Mercu Buana','Agus',50,49,'http://localhost/seminar/assets/uploads/poster_seminar/display/250/400/fypepd7sox.jpg',1,'2017-05-20 12:43:13','2017-05-20 12:46:03'),
 	(2,1,'IT Security','IT Security','2017-07-20 08:00:00','Auditorium Mercu Buana','Budi',100,98,'http://localhost/seminar/assets/uploads/poster_seminar/display/250/400/VW4BQBljgJ.jpg',1,'2017-05-20 12:47:19','2017-05-25 17:06:49'),
-	(4,1,'Mobile Application','Android','2017-07-20 09:00:00','Auditorium Mercu Buana','Harianto',50,49,'http://localhost/seminar/assets/uploads/poster_seminar/display/250/400/A6VJMchr5p.jpg',1,'2017-05-23 19:50:48','2017-05-25 17:06:37');
+	(4,1,'Mobile Application','Android','2017-07-20 09:00:00','Auditorium Mercu Buana','Harianto',50,48,'http://localhost/seminar/assets/uploads/poster_seminar/display/250/400/A6VJMchr5p.jpg',1,'2017-05-23 19:50:48','2017-05-25 17:06:37');
 
 /*!40000 ALTER TABLE `seminar` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -109,7 +112,9 @@ INSERT INTO `seminar_order` (`order_id`, `seminar_id`, `member_id`, `serial`, `a
 VALUES
 	(1,2,3,'TSCRTY-0001',1,'2017-05-25 19:37:15'),
 	(3,2,1,'TSCRTY-0002',1,'2017-05-25 19:45:29'),
-	(4,4,1,'MBLPPLCTN-0001',0,'2017-05-25 20:48:23');
+	(4,4,1,'MBLPPLCTN-0001',0,'2017-05-25 20:48:23'),
+	(5,1,1,'BGDT-0001',0,'2017-05-26 22:42:59'),
+	(6,4,3,'MBLPPLCTN-0002',0,'2017-05-29 21:50:59');
 
 /*!40000 ALTER TABLE `seminar_order` ENABLE KEYS */;
 UNLOCK TABLES;

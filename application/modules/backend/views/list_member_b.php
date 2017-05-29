@@ -54,6 +54,8 @@
                                 <th>Firstname</th>
                                 <th>Lastname</th>
                                 <th>Email</th>
+                                <th>Gender</th>
+                                <th>Dob</th>
                                 <th>Phone</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -66,6 +68,8 @@
                                     <td><?php echo $value['firstname'] ?></td>	
                                     <td><?php echo $value['lastname'] ?></td>
                                     <td><?php echo $value['email'] ?></td>
+                                    <td><?php echo $value['gender'] ?></td>
+                                    <td><?php echo $value['dob'] ?></td>
                                     <td><?php echo $value['phone'] ?></td>
                                     <td><?php echo (($value['status'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Non Active</span>' ); ?></td>
                                     <td class="text-center">

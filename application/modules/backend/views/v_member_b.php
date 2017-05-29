@@ -52,10 +52,31 @@
                                 <label for="lastname">Lastname</label>
                                 <input type="text" class="form-control" id="lastname" name="lastname" placeholder="lastname" autocomplete="off"  value="<?php echo (!empty($getDetail['lastname']) ? $getDetail['lastname'] : '') ?>">
                             </div>
+                            
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select name="gender" class="form-control">
+                                    <?php
+                                    $status = array("L" => "Laki-Laki",
+                                        "P" => "Perempuan");
+                                    foreach ($status as $key => $item) {
+                                        ?>
+                                        <option value="<?php echo $key; ?>" <?php echo ($getDetail['gender'] == $key) ? 'selected' : ''; ?>> 
+                                            <?php echo $item; ?> 
+                                        </option>
+
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Date of birth</label>
+                                <input type="date" class="form-control" id="dob" name="dob" maxlength="13" placeholder="dob" autocomplete="off"  value="<?php echo (!empty($getDetail['dob']) ? $getDetail['dob'] : '') ?>">
+                            </div>
                             <div class="form-group">
                                 <label for="phone">Phone</label>
                                 <input type="text" class="form-control" id="phone" name="phone" maxlength="13" placeholder="No telp" autocomplete="off"  value="<?php echo (!empty($getDetail['phone']) ? $getDetail['phone'] : '') ?>">
                             </div>
+                            
                             <div class="form-group">
                                 <label>Status Seminar</label>
                                 <select name="status" class="form-control">
