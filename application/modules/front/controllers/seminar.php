@@ -26,6 +26,11 @@ class Seminar extends MY_Controller {
             echo json_encode(array('status' => 'error', 'alert' => 'Maaf, email yang diinput tidak terdaftar.'));
             return false;
         }
+        
+        if($detail_member->status != 1){
+            echo json_encode(array('status' => 'error', 'alert' => 'Silakan konfirmasi akun anda melalui email.'));
+            return false;
+        }
 
         // check member daftar seminar;
         $check_order_seminar = $this->m_seminar->getDetData('seminar_order', array('member_id' => $member_id, 'seminar_id' => $seminar_id));

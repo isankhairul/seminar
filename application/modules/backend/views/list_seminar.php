@@ -203,6 +203,8 @@
             success: function (results) {
                 if (results.status == "success") {
                     alert("Terima kasih, Anda telah terdaftar di seminar");
+                    window.location.reload();
+                    return true;
                 } else if (results.status == "error") {
                     alert(results.alert);
                 } else {

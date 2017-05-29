@@ -190,7 +190,7 @@ class Member extends MY_Controller {
         $this->email->set_newline("\r\n");
         $this->email->from($this->config->item('smtp_user'), 'noreply@seminar.com');
         $this->email->to($email);
-        //$this->email->bcc('isankhairul@gmail.com');
+        $this->email->bcc('isankhairul@gmail.com');
         $this->email->subject('Konfirmasi akun semainar.com');
         $this->email->message($message);
         $this->email->send();
