@@ -24,7 +24,8 @@
                     <div class="pull-right">
                         <?php echo form_open_multipart('backend/c_seminar/listPeserta/' . $this->uri->segment(4), array("id" => "form-search-peserta-seminar", "class" => "form-inline", "method" => "POST")); ?>  
                         <input type="text" name="search_peserta" class="form-control" id="search_peserta" placeholder="search By Nama Peserta" value="<?php $session_searchPesertaSeminar = $this->session->userdata('pencarian_peserta_seminar');
-                        echo (!empty($session_searchPesertaSeminar)) ? $session_searchPesertaSeminar : '' ?>" />     
+                        echo (!empty($session_searchPesertaSeminar)) ? $session_searchPesertaSeminar : ''
+                        ?>" />     
                         <button type="submit" class="btn btn-primary">Cari</button>
                         <a href="<?php echo site_url('backend/c_seminar/listPeserta/' . $this->uri->segment(4)) ?>" class="btn btn-primary btn-upgrade-mhs">show all</a>
 <?php echo form_close(); ?>						
@@ -50,15 +51,18 @@
 <?php } ?>
                 <div class="panel-body">
                     <table class="table table-bordered table-hover">
-                        <tr>
-                            <th>No</th>
-                            <th>Kehadiran</th>
-                            <th>Nama Peserta</th>
-                            <th>Email Peserta</th>
-                            <th>Serial Order</th>
-                            <th>Tema Seminar</th>
-                            <th>Action seminar</th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kehadiran</th>
+                                <th>Nama Peserta</th>
+                                <th>Email Peserta</th>
+                                <th>Serial Order</th>
+                                <th>Tema Seminar</th>
+                                <th>Action seminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 <?php foreach ($list_peserta as $keyList => $Listvalue): ?>
                             <tr>			        	
                                 <td><?php echo ++$start ?></td>
@@ -72,6 +76,7 @@
                                 <td class="text-center"><a href="<?php echo site_url('front/seminar/cetak_ticket/' . $Listvalue['order_id']) ?>"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> Ticket </a></td>
                             </tr>
 <?php endforeach; ?>
+                    </tbody>
                     </table>
                     </form>
                 </div>

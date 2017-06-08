@@ -34,7 +34,7 @@ class C_member extends MY_Controller {
 
         $config['total_rows'] = $this->m_member->jumlah_dataMember($search);
         //echo $config['total_rows'];die();
-        $config['per_page'] = "20";
+        $config['per_page'] = "2";
         $config["uri_segment"] = 4;
         //$choice 				= $config["total_rows"] / $config["per_page"];
         //$config["num_links"] 	= floor($choice);
