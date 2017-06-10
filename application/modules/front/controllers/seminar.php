@@ -34,11 +34,23 @@ class Seminar extends MY_Controller {
 
         // check member daftar seminar;
         $check_order_seminar = $this->m_seminar->getDetData('seminar_order', array('member_id' => $member_id, 'seminar_id' => $seminar_id));
+        
+        $diff_time = time() - strtotime($detail_seminar->jadwal);
+        if ($diff_time > 0) {
+            echo json_encode(array('status' => 'error', 'alert' => 'Maaf, seminar tidak bisa diorder karena tidak aktif.'));
+            return false;
+        }
+        
+        if ($detail_seminar->status == 0) {
+            echo json_encode(array('status' => 'error', 'alert' => 'Maaf, seminar tidak bisa diorder karena tidak aktif.'));
+            return false;
+        }
+        
         if ($check_order_seminar) {
             echo json_encode(array('status' => 'error', 'alert' => 'Maaf, anda sudah pernah mengikuti seminar ini.'));
             return false;
         }
-
+        
         if ($detail_seminar->sisa_kuota <= 0) {
             echo json_encode(array('status' => 'error', 'alert' => 'Maaf, kuota seminar sudah habis.'));
             return false;

@@ -43,6 +43,11 @@
                 <?php echo $this->session->flashdata('infoSuccessRegister'); ?>
             </div>
         <?php } ?>
+        <div class="has-error">
+            <?php
+            echo validation_errors();
+            ?>
+        </div>
         <div>		  
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="<?php echo ($tab_active == 'login' ? 'active' : ''); ?>" ><a href="#login" aria-controls="login" role="tab" data-toggle="tab">Login</a></li>
@@ -59,11 +64,7 @@
                         </div>
                         <div class="col-md-7 about-grid">
                             <form class="form-horizontal" action="<?php echo site_url('front/member/member_login') ?>" method="post" id="form_register_member" enctype="multipart/form-data" style="margin-bottom: 15px">
-                                <div class="has-error">
-                                    <?php
-                                    echo validation_errors();
-                                    ?>
-                                </div>
+                                
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Email</label>
                                     <div class="col-sm-10">
@@ -96,18 +97,13 @@
                         <div class="col-md-7 about-grid">
 
                             <form action="<?php echo site_url('front/member/submit_register_member') ?>" method="post" id="form_register_member" enctype="multipart/form-data" style="margin-bottom: 15px">
-                                <div class="has-error">
-                                    <?php
-                                    echo validation_errors();
-                                    ?>
-                                </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="email" value="<?php echo (!empty(set_value('email'))) ? set_value('email') : $this->session->flashdata('email'); ?>" required="required">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="email" value="<?php echo (!empty(set_value('email'))) ? set_value('email') : $this->session->flashdata('email'); ?>">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="required">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="repassword">Retype Password</label>

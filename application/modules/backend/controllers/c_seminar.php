@@ -149,7 +149,7 @@ class C_seminar extends MY_Controller {
         }
         $page = $this->uri->segment(5);
         //echo $page;die();
-        $batas = 20;
+        $batas = 2;
         if (!$page):
             $offset = 0;
         else:
