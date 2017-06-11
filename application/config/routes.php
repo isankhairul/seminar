@@ -63,7 +63,7 @@ $route['seminar/(:any)'] = 'front/all_seminar/index/$1';
 $route['seminar'] = 'front/all_seminar/index/1';
 $route['profil'] = 'front/home/profil';
 $route['resend-confirmation'] = 'front/member/resend_confirmation';
-$route['confirmation'] = 'front/member/confirmation';
+$route['account-confirmations'] = 'front/member/confirmation';
 
 
 $route['404_override'] = '';
