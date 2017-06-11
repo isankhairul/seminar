@@ -22,6 +22,11 @@ class Seminar extends MY_Controller {
         
         $serial = $this->m_seminar->generate_serial_order($seminar_id);
         
+        if(empty($seminar_id) || empty($email_member)){
+            echo json_encode(array('status' => 'error', 'alert' => 'Maaf, email dan seminar_id harus diisi.'));
+            return false;
+        }
+        
         if(empty($member_id)){
             echo json_encode(array('status' => 'error', 'alert' => 'Maaf, email yang diinput tidak terdaftar.'));
             return false;
