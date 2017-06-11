@@ -95,7 +95,11 @@
                             <div class="form-group">
                                 <label for="input_file">Photo</label>
                                 <input type="file" id="photo" name="photo">
-                                <p class="help-block">Photo</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Old Photo</label>
+                                <br />
+                                <img src="<?php echo $getDetail['photo']; ?>" class="img-thumbnail" />
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

@@ -58,8 +58,8 @@ class Member extends MY_Controller {
         }
 
         $file_name = base_url('/assets/uploads/no-photo.png');
-        if (!empty($_FILES['photo_mhs']['name'])) {
-            $filename = $this->upload_image($_FILES['photo_mhs']);
+        if (!empty($_FILES['photo']['name'])) {
+            $filename = $this->upload_image($_FILES['photo']);
             $file_name = base_url('/assets/uploads/member/display/100/150/' . $filename);
         }
 
@@ -220,7 +220,7 @@ class Member extends MY_Controller {
         $config['allowed_types'] = 'gif|jpg|jpeg|png';
         $this->load->library('upload', $config);
         //$this->upload->initialize($config);
-        $upload = $this->upload->do_upload('photo_mhs');
+        $upload = $this->upload->do_upload('photo');
 
         if (!$upload) {
             $invalid = $this->upload->display_errors();
